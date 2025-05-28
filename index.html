@@ -4,24 +4,281 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ProtegeJus - Plataforma de Denúncias e Apoio Jurídico LGBT+</title>
+    <title>VOZ ATIVA - Plataforma de Denúncias e Apoio Jurídico LGBT+</title>
     <meta name="description" content="Plataforma segura para denúncias, orientação jurídica e apoio à comunidade LGBT+. Conectamos você aos recursos e profissionais que podem te ajudar." />
-    <meta name="author" content="ProtegeJus" />
+    <meta name="author" content="VOZ ATIVA" />
 
-    <meta property="og:title" content="ProtegeJus - Plataforma de Denúncias e Apoio Jurídico LGBT+" />
+    <meta property="og:title" content="VOZ ATIVA - Plataforma de Denúncias e Apoio Jurídico LGBT+" />
     <meta property="og:description" content="Plataforma segura para denúncias, orientação jurídica e apoio à comunidade LGBT+." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@protegejus" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <link rel="stylesheet" href="styles.css">
   </head>
 
   <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <header class="header">
+      <div class="container">
+        <div class="nav-content">
+          <div class="logo">
+            <img src="/lovable-uploads/dbb79008-45f2-475a-875e-1429c4d1e68a.png" alt="VOZ ATIVA" class="logo-img">
+            <h1>VOZ ATIVA</h1>
+          </div>
+          
+          <nav class="nav-menu">
+            <a href="#inicio">Início</a>
+            <a href="#denuncias">Denúncias</a>
+            <a href="#orientacoes">Orientações</a>
+          </nav>
+
+          <button class="emergency-exit" onclick="handleEmergencyExit()">
+            <span>⚠️</span>
+            Saída Rápida
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="inicio" class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1 class="hero-title">VOZ ATIVA</h1>
+            <p class="hero-subtitle">
+              Oferecemos recursos para denunciar discriminação, violência e buscar apoio jurídico 
+              e emocional para a comunidade LGBT+, respeitando sua privacidade e segurança.
+            </p>
+            
+            <div class="hero-buttons">
+              <button class="btn btn-primary" onclick="scrollToSection('denuncias')">
+                Fazer Denúncia
+              </button>
+              <button class="btn btn-secondary" onclick="scrollToSection('orientacoes')">
+                Orientações Jurídicas
+              </button>
+            </div>
+
+            <div class="security-badge">
+              <span class="badge-icon">🔒</span>
+              Denúncias seguras e criptografadas
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-card">
+              <div class="stat-header">HOMICÍDIOS POR HOMOFOBIA</div>
+              <div class="stat-number">143</div>
+              <div class="stat-label">mortes</div>
+              <div class="stat-detail">1 assassinato a cada 24 horas</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="denuncias" class="denuncias-section">
+        <div class="container">
+          <h2>Como Fazer sua Denúncia</h2>
+          
+          <div class="denuncias-grid">
+            <div class="denuncia-card">
+              <div class="card-icon">📝</div>
+              <h3>Denúncias Seguras</h3>
+              <p>Relate violações de direitos de forma anônima ou identificada, com total proteção de dados.</p>
+              <button class="btn btn-primary">Denunciar Agora</button>
+            </div>
+
+            <div class="denuncia-card">
+              <div class="card-icon">⚖️</div>
+              <h3>Orientação Jurídica</h3>
+              <p>Acesse informações sobre seus direitos e orientações de profissionais especializados.</p>
+              <button class="btn btn-secondary">Ver Orientações</button>
+            </div>
+
+            <div class="denuncia-card">
+              <div class="card-icon">💬</div>
+              <h3>Apoio Emocional</h3>
+              <p>Converse com voluntários treinados em um ambiente seguro e confidencial.</p>
+              <button class="btn btn-secondary">Buscar Apoio</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="orientacoes" class="orientacoes-section">
+        <div class="container">
+          <h2>Orientações Jurídicas</h2>
+          <p class="section-subtitle">Conheça seus direitos e saiba como proceder em casos de discriminação.</p>
+          
+          <div class="orientacoes-grid">
+            <div class="orientacoes-column">
+              <h3>Seus Direitos</h3>
+              <div class="direitos-list">
+                <div class="direito-item">
+                  <h4>Decisão do STF</h4>
+                  <p>Equipara a discriminação por orientação sexual e identidade de gênero ao crime de racismo (Lei 7.716/89).</p>
+                </div>
+                <div class="direito-item">
+                  <h4>Direito ao nome social</h4>
+                  <p>Reconhecimento da identidade de gênero (Decreto nº 8.727/2016).</p>
+                </div>
+                <div class="direito-item">
+                  <h4>União estável</h4>
+                  <p>Casamento civil entre pessoas do mesmo gênero são permitidos e têm os mesmos direitos.</p>
+                </div>
+                <div class="direito-item">
+                  <h4>Proteção Legal</h4>
+                  <p>O Art. 140 do Código Penal protege contra injúria discriminatória.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="orientacoes-column">
+              <h3>Como Proceder</h3>
+              <div class="procedimentos-list">
+                <div class="procedimento-item">
+                  <span class="step-number">1</span>
+                  <div>
+                    <h4>Registre um Boletim de Ocorrência</h4>
+                    <p>na delegacia de inteligência. Se possível, procure delegacias especializadas em crimes de intolerância.</p>
+                  </div>
+                </div>
+                <div class="procedimento-item">
+                  <span class="step-number">2</span>
+                  <div>
+                    <h4>Guarde todas as evidências</h4>
+                    <p>prints, gravações, mensagens e nomes de testemunhas.</p>
+                  </div>
+                </div>
+                <div class="procedimento-item">
+                  <span class="step-number">3</span>
+                  <div>
+                    <h4>Procure a Defensoria Pública</h4>
+                    <p>ou um advogado especializado em direitos LGBT+.</p>
+                  </div>
+                </div>
+                <div class="procedimento-item">
+                  <span class="step-number">4</span>
+                  <div>
+                    <h4>Denuncie também ao Ministério Público</h4>
+                    <p>e órgãos de direitos humanos.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="situacoes-comuns">
+            <h3>Situações Comuns</h3>
+            <div class="situacoes-grid">
+              <div class="situacao-card">
+                <h4>Discriminação em local público</h4>
+                <p>É ilegal negar atendimento ou tratamento diferenciado em estabelecimentos comerciais, de serviço ou entretenimento com base em orientação sexual ou identidade de gênero.</p>
+                <div class="oque-fazer">
+                  <strong>O que fazer:</strong>
+                  <ul>
+                    <li>Registre a ocorrência no local (livro de reclamações, SAC)</li>
+                    <li>Obtenha nomes de testemunhas, grave o ocorrido se possível</li>
+                    <li>Faça um B.O. e denuncie ao Procon e órgãos de defesa do consumidor</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="situacao-card">
+                <h4>Discriminação no ambiente de trabalho</h4>
+                <p>Discriminação, assédio ou tratamento diferenciado com base em orientação sexual ou identidade de gênero no trabalho é ilegal e pode caracterizar dano moral.</p>
+                <div class="oque-fazer">
+                  <strong>O que fazer:</strong>
+                  <ul>
+                    <li>Registre as ocorrências com datas e detalhes</li>
+                    <li>Reporte ao departamento de RH ou canal de denúncias da empresa</li>
+                    <li>Procure o sindicato da categoria ou a Justiça do Trabalho</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="situacao-card">
+                <h4>Violência ou agressão</h4>
+                <p>Agressões físicas motivadas por homofobia ou transfobia são crimes graves que devem ser denunciados imediatamente.</p>
+                <div class="oque-fazer">
+                  <strong>O que fazer:</strong>
+                  <ul>
+                    <li>Busque atendimento médico e solicite um laudo das lesões</li>
+                    <li>Registre um B.O. em uma delegacia, preferencialmente especializada</li>
+                    <li>Solicite medidas protetivas se necessário</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="emergency-contacts">
+        <div class="container">
+          <h2>Canais de Denúncia Oficiais</h2>
+          <div class="contacts-grid">
+            <div class="contact-card urgent">
+              <h3>Disque 100</h3>
+              <p class="contact-number">100</p>
+              <p>Disque Direitos Humanos - Atendimento 24h</p>
+            </div>
+            <div class="contact-card urgent">
+              <h3>Disque 180</h3>
+              <p class="contact-number">180</p>
+              <p>Central de Atendimento à Mulher - Inclui mulheres trans</p>
+            </div>
+            <div class="contact-card">
+              <h3>Ministério Público</h3>
+              <p>Denúncias online via site do MP do seu estado</p>
+            </div>
+            <div class="contact-card">
+              <h3>Defensoria Pública</h3>
+              <p>Atendimento jurídico gratuito para população de baixa renda</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <img src="/lovable-uploads/dbb79008-45f2-475a-875e-1429c4d1e68a.png" alt="VOZ ATIVA" class="footer-logo-img">
+              <h3>VOZ ATIVA</h3>
+            </div>
+            <p>Plataforma dedicada à proteção e apoio da comunidade LGBT+ através de denúncias seguras e orientação jurídica especializada.</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Serviços</h4>
+            <ul>
+              <li><a href="#denuncias">Denúncias Anônimas</a></li>
+              <li><a href="#orientacoes">Orientação Jurídica</a></li>
+              <li><a href="#apoio">Apoio Emocional</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Contato de Emergência</h4>
+            <div class="emergency-box">
+              <p class="emergency-number">Disque 100</p>
+              <p>Direitos Humanos</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 VOZ ATIVA. Todos os direitos reservados.</p>
+          <div class="footer-links">
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Termos de Uso</a>
+            <a href="#">Sobre Nós</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
