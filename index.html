@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -38,6 +37,83 @@
       </div>
     </header>
 
+    <!-- Modal de Denúncia -->
+    <div id="denunciaModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Fazer Denúncia</h2>
+          <button class="close-modal" onclick="closeDenunciaModal()">×</button>
+        </div>
+        
+        <form id="denunciaForm" class="denuncia-form">
+          <div class="form-section">
+            <div class="anonymous-toggle">
+              <label class="switch">
+                <input type="checkbox" id="enviarAnonimo">
+                <span class="slider"></span>
+              </label>
+              <span class="toggle-label">ENVIAR COMO ANÔNIMO</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" id="nomeCompleto" placeholder="NOME COMPLETO" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <input type="email" id="email" placeholder="EMAIL" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <input type="tel" id="telefone" placeholder="TELEFONE" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <input type="date" id="data" class="form-input" required>
+            <label for="data" class="date-label">DATA</label>
+          </div>
+
+          <div class="form-group">
+            <select id="tipoOcorrencia" class="form-input" required>
+              <option value="">SELECIONE O TIPO DE OCORRÊNCIA</option>
+              <option value="discriminacao-trabalho">Discriminação no Trabalho</option>
+              <option value="discriminacao-escola">Discriminação na Escola</option>
+              <option value="violencia-fisica">Violência Física</option>
+              <option value="violencia-psicologica">Violência Psicológica</option>
+              <option value="discriminacao-servicos">Discriminação em Serviços</option>
+              <option value="cyberbullying">Cyberbullying</option>
+              <option value="violencia-domestica">Violência Doméstica</option>
+              <option value="outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <textarea id="descricao" placeholder="DESCRIÇÃO" class="form-textarea" rows="4" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <textarea id="evidencias" placeholder="EVIDÊNCIAS" class="form-textarea" rows="3"></textarea>
+          </div>
+
+          <div class="form-group file-upload-section">
+            <div class="file-upload-area" id="fileUploadArea">
+              <div class="file-upload-content">
+                <span class="file-upload-icon">📎</span>
+                <p>Anexar Arquivo</p>
+                <p class="file-upload-subtitle">Foto, áudio ou vídeo (máx. 50MB)</p>
+              </div>
+              <input type="file" id="fileInput" accept="image/*,audio/*,video/*" multiple>
+            </div>
+            <div id="fileList" class="file-list"></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-continuar">Continuar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <main>
       <section id="inicio" class="hero">
         <div class="container">
@@ -49,7 +125,7 @@
             </p>
             
             <div class="hero-buttons">
-              <button class="btn btn-primary" onclick="scrollToSection('denuncias')">
+              <button class="btn btn-primary" onclick="openDenunciaModal()">
                 Fazer Denúncia
               </button>
               <button class="btn btn-secondary" onclick="scrollToSection('orientacoes')">
@@ -83,21 +159,21 @@
               <div class="card-icon">📝</div>
               <h3>Denúncias Seguras</h3>
               <p>Relate violações de direitos de forma anônima ou identificada, com total proteção de dados.</p>
-              <button class="btn btn-primary">Denunciar Agora</button>
+              <button class="btn btn-primary" onclick="openDenunciaModal()">Denunciar Agora</button>
             </div>
 
             <div class="denuncia-card">
               <div class="card-icon">⚖️</div>
               <h3>Orientação Jurídica</h3>
               <p>Acesse informações sobre seus direitos e orientações de profissionais especializados.</p>
-              <button class="btn btn-secondary">Ver Orientações</button>
+              <button class="btn btn-secondary" onclick="scrollToSection('orientacoes')">Ver Orientações</button>
             </div>
 
             <div class="denuncia-card">
               <div class="card-icon">💬</div>
               <h3>Apoio Emocional</h3>
               <p>Converse com voluntários treinados em um ambiente seguro e confidencial.</p>
-              <button class="btn btn-secondary">Buscar Apoio</button>
+              <button class="btn btn-secondary" onclick="scrollToSection('emergency-contacts')">Buscar Apoio</button>
             </div>
           </div>
         </div>

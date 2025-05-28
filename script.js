@@ -1,4 +1,3 @@
-
 // Smooth scrolling para seções
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
@@ -17,6 +16,209 @@ function scrollToSection(sectionId) {
 function handleEmergencyExit() {
   // Redireciona para um site neutro para segurança
   window.location.href = 'https://www.google.com';
+}
+
+// Modal de Denúncia
+function openDenunciaModal() {
+  const modal = document.getElementById('denunciaModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  // Animar entrada do modal
+  setTimeout(() => {
+    modal.querySelector('.modal-content').style.transform = 'translateY(0) scale(1)';
+  }, 10);
+}
+
+function closeDenunciaModal() {
+  const modal = document.getElementById('denunciaModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+  
+  // Resetar formulário
+  document.getElementById('denunciaForm').reset();
+  document.getElementById('fileList').innerHTML = '';
+  updateFormVisibility();
+}
+
+// Controle de visibilidade dos campos baseado no toggle anônimo
+function updateFormVisibility() {
+  const isAnonymous = document.getElementById('enviarAnonimo').checked;
+  const nomeField = document.getElementById('nomeCompleto');
+  const emailField = document.getElementById('email');
+  const telefoneField = document.getElementById('telefone');
+  
+  if (isAnonymous) {
+    nomeField.style.opacity = '0.5';
+    emailField.style.opacity = '0.5';
+    telefoneField.style.opacity = '0.5';
+    nomeField.required = false;
+    emailField.required = false;
+    telefoneField.required = false;
+    nomeField.placeholder = 'NOME COMPLETO (OPCIONAL)';
+    emailField.placeholder = 'EMAIL (OPCIONAL)';
+    telefoneField.placeholder = 'TELEFONE (OPCIONAL)';
+  } else {
+    nomeField.style.opacity = '1';
+    emailField.style.opacity = '1';
+    telefoneField.style.opacity = '1';
+    nomeField.required = true;
+    emailField.required = true;
+    telefoneField.required = true;
+    nomeField.placeholder = 'NOME COMPLETO';
+    emailField.placeholder = 'EMAIL';
+    telefoneField.placeholder = 'TELEFONE';
+  }
+}
+
+// Upload de arquivos
+let uploadedFiles = [];
+
+function setupFileUpload() {
+  const fileInput = document.getElementById('fileInput');
+  const fileUploadArea = document.getElementById('fileUploadArea');
+  const fileList = document.getElementById('fileList');
+  
+  // Click no upload area
+  fileUploadArea.addEventListener('click', () => {
+    fileInput.click();
+  });
+  
+  // Drag and drop
+  fileUploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileUploadArea.classList.add('dragover');
+  });
+  
+  fileUploadArea.addEventListener('dragleave', () => {
+    fileUploadArea.classList.remove('dragover');
+  });
+  
+  fileUploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileUploadArea.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+  });
+  
+  // Seleção de arquivos
+  fileInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+  });
+  
+  function handleFiles(files) {
+    Array.from(files).forEach(file => {
+      // Verificar tamanho máximo (50MB)
+      if (file.size > 50 * 1024 * 1024) {
+        alert(`Arquivo ${file.name} é muito grande. Máximo permitido: 50MB`);
+        return;
+      }
+      
+      // Verificar se já não foi adicionado
+      if (uploadedFiles.find(f => f.name === file.name && f.size === file.size)) {
+        alert(`Arquivo ${file.name} já foi adicionado`);
+        return;
+      }
+      
+      uploadedFiles.push(file);
+      addFileToList(file);
+    });
+  }
+  
+  function addFileToList(file) {
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+    
+    const fileIcon = getFileIcon(file.type);
+    const fileSize = formatFileSize(file.size);
+    
+    fileItem.innerHTML = `
+      <div class="file-info">
+        <span class="file-icon">${fileIcon}</span>
+        <div>
+          <div class="file-name">${file.name}</div>
+          <div class="file-size">${fileSize}</div>
+        </div>
+      </div>
+      <button type="button" class="remove-file" onclick="removeFile('${file.name}', ${file.size})">×</button>
+    `;
+    
+    fileList.appendChild(fileItem);
+  }
+  
+  function getFileIcon(fileType) {
+    if (fileType.startsWith('image/')) return '🖼️';
+    if (fileType.startsWith('audio/')) return '🎵';
+    if (fileType.startsWith('video/')) return '🎬';
+    return '📄';
+  }
+  
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+}
+
+function removeFile(fileName, fileSize) {
+  uploadedFiles = uploadedFiles.filter(file => 
+    !(file.name === fileName && file.size === fileSize)
+  );
+  
+  // Remover da visualização
+  const fileItems = document.querySelectorAll('.file-item');
+  fileItems.forEach(item => {
+    const nameElement = item.querySelector('.file-name');
+    if (nameElement && nameElement.textContent === fileName) {
+      item.style.animation = 'slideOutUp 0.3s ease';
+      setTimeout(() => {
+        if (item.parentNode) {
+          item.parentNode.removeChild(item);
+        }
+      }, 300);
+    }
+  });
+}
+
+// Submissão do formulário
+function handleFormSubmit(e) {
+  e.preventDefault();
+  
+  const formData = new FormData();
+  const isAnonymous = document.getElementById('enviarAnonimo').checked;
+  
+  // Coletar dados do formulário
+  if (!isAnonymous) {
+    formData.append('nomeCompleto', document.getElementById('nomeCompleto').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('telefone', document.getElementById('telefone').value);
+  }
+  
+  formData.append('data', document.getElementById('data').value);
+  formData.append('tipoOcorrencia', document.getElementById('tipoOcorrencia').value);
+  formData.append('descricao', document.getElementById('descricao').value);
+  formData.append('evidencias', document.getElementById('evidencias').value);
+  formData.append('anonimo', isAnonymous);
+  
+  // Adicionar arquivos
+  uploadedFiles.forEach((file, index) => {
+    formData.append(`arquivo_${index}`, file);
+  });
+  
+  // Simulação de envio
+  const submitButton = document.querySelector('.btn-continuar');
+  const originalText = submitButton.textContent;
+  
+  submitButton.textContent = 'Enviando...';
+  submitButton.disabled = true;
+  
+  setTimeout(() => {
+    alert('Denúncia enviada com sucesso! Você receberá um protocolo de acompanhamento.');
+    closeDenunciaModal();
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
+  }, 2000);
 }
 
 // Adicionar efeito de scroll no header
@@ -48,12 +250,27 @@ function animateOnScroll() {
   });
   
   cards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
     observer.observe(card);
   });
 }
+
+// Fechar modal com ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('denunciaModal');
+    if (modal.classList.contains('active')) {
+      closeDenunciaModal();
+    }
+  }
+});
+
+// Fechar modal clicando fora dele
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('denunciaModal');
+  if (e.target === modal) {
+    closeDenunciaModal();
+  }
+});
 
 // Smooth scroll para links de navegação
 document.addEventListener('DOMContentLoaded', function() {
@@ -67,47 +284,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
+  // Configurar upload de arquivos
+  setupFileUpload();
+  
+  // Configurar toggle anônimo
+  document.getElementById('enviarAnonimo').addEventListener('change', updateFormVisibility);
+  
+  // Configurar submissão do formulário
+  document.getElementById('denunciaForm').addEventListener('submit', handleFormSubmit);
+  
   // Inicializar animações
   animateOnScroll();
   
-  // Adicionar funcionalidade aos botões de denúncia
-  const denunciaButtons = document.querySelectorAll('.denuncia-card .btn-primary');
-  denunciaButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      alert('Funcionalidade de denúncia será implementada. Entre em contato pelos canais oficiais: Disque 100 ou Disque 180.');
-    });
-  });
-  
-  // Adicionar funcionalidade aos botões de orientação
-  const orientacaoButtons = document.querySelectorAll('.denuncia-card .btn-secondary');
-  orientacaoButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      scrollToSection('orientacoes');
-    });
-  });
-});
-
-// Funcionalidade do menu mobile (se necessário)
-function toggleMobileMenu() {
-  const navMenu = document.querySelector('.nav-menu');
-  navMenu.classList.toggle('mobile-active');
-}
-
-// Adicionar efeito de hover nos cards
-document.addEventListener('DOMContentLoaded', function() {
-  const cards = document.querySelectorAll('.denuncia-card, .situacao-card, .contact-card');
-  
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      this.style.transform = 'translateY(-5px) scale(1.02)';
-      this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0) scale(1)';
-      this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
-    });
-  });
+  // Configurar visibilidade inicial dos campos
+  updateFormVisibility();
 });
 
 // Contador animado para estatísticas
@@ -138,9 +328,6 @@ function animateCounter() {
   }
 }
 
-// Inicializar contador quando a página carregar
-document.addEventListener('DOMContentLoaded', animateCounter);
-
 // Função para destacar link ativo na navegação
 function updateActiveNav() {
   const sections = document.querySelectorAll('section[id]');
@@ -165,5 +352,63 @@ function updateActiveNav() {
   });
 }
 
-// Inicializar navegação ativa
-document.addEventListener('DOMContentLoaded', updateActiveNav);
+// Adicionar efeito parallax suave
+function addParallaxEffect() {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.hero::before');
+    
+    parallaxElements.forEach(element => {
+      const speed = 0.5;
+      element.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  });
+}
+
+// Inicializar todas as funcionalidades
+document.addEventListener('DOMContentLoaded', function() {
+  animateCounter();
+  updateActiveNav();
+  addParallaxEffect();
+});
+
+// Adicionar animação de typing para o título
+function addTypingEffect() {
+  const title = document.querySelector('.hero-title');
+  if (title) {
+    const text = title.textContent;
+    title.textContent = '';
+    title.style.borderRight = '2px solid #8B5CF6';
+    
+    let i = 0;
+    const typeWriter = () => {
+      if (i < text.length) {
+        title.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 100);
+      } else {
+        setTimeout(() => {
+          title.style.borderRight = 'none';
+        }, 1000);
+      }
+    };
+    
+    setTimeout(typeWriter, 1000);
+  }
+}
+
+// Adicionar animação CSS para slideOutUp
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideOutUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+`;
+document.head.appendChild(style);
