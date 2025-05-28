@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -36,6 +37,28 @@
         </div>
       </div>
     </header>
+
+    <!-- Carrossel de Fotos -->
+    <section class="carousel-section">
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="carousel-slide active">
+            <img src="/lovable-uploads/94417a48-f73a-4cc2-ba82-64a143f94d18.png" alt="Plataforma segura e acolhedora" class="carousel-image">
+          </div>
+          <div class="carousel-slide">
+            <img src="/lovable-uploads/ffe7a5e6-441e-464c-98f7-a58099186181.png" alt="LGBTfobia é crime" class="carousel-image">
+          </div>
+        </div>
+        
+        <button class="carousel-btn carousel-prev" onclick="prevSlide()">❮</button>
+        <button class="carousel-btn carousel-next" onclick="nextSlide()">❯</button>
+        
+        <div class="carousel-indicators">
+          <span class="indicator active" onclick="goToSlide(0)"></span>
+          <span class="indicator" onclick="goToSlide(1)"></span>
+        </div>
+      </div>
+    </section>
 
     <!-- Modal de Denúncia -->
     <div id="denunciaModal" class="modal-overlay">
@@ -131,11 +154,6 @@
               <button class="btn btn-secondary" onclick="scrollToSection('orientacoes')">
                 Orientações Jurídicas
               </button>
-            </div>
-
-            <div class="security-badge">
-              <span class="badge-icon">🔒</span>
-              Denúncias seguras e criptografadas
             </div>
           </div>
 
@@ -303,12 +321,12 @@
               <p>Central de Atendimento à Mulher - Inclui mulheres trans</p>
             </div>
             <div class="contact-card">
-              <h3>Ministério Público</h3>
-              <p>Denúncias online via site do MP do seu estado</p>
+              <h3>Ministério Público da Bahia</h3>
+              <p><a href="https://www.mpba.mp.br/" target="_blank" class="contact-link">Denúncias online via site do MP-BA</a></p>
             </div>
             <div class="contact-card">
-              <h3>Defensoria Pública</h3>
-              <p>Atendimento jurídico gratuito para população de baixa renda</p>
+              <h3>Defensoria Pública da Bahia</h3>
+              <p><a href="https://www.defensoria.ba.def.br/" target="_blank" class="contact-link">Atendimento jurídico gratuito</a></p>
             </div>
           </div>
         </div>

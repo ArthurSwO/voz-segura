@@ -18,6 +18,49 @@ function handleEmergencyExit() {
   window.location.href = 'https://www.google.com';
 }
 
+// Carousel functionality
+let currentSlide = 0;
+const totalSlides = 2;
+
+function showSlide(index) {
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const indicators = document.querySelectorAll('.indicator');
+  
+  // Remove active class from all slides and indicators
+  slides.forEach(slide => slide.classList.remove('active'));
+  indicators.forEach(indicator => indicator.classList.remove('active'));
+  
+  // Add active class to current slide and indicator
+  slides[index].classList.add('active');
+  indicators[index].classList.add('active');
+  
+  // Move track
+  track.style.transform = `translateX(-${index * 50}%)`;
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % totalSlides;
+  showSlide(currentSlide);
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+  showSlide(currentSlide);
+}
+
+function goToSlide(index) {
+  currentSlide = index;
+  showSlide(currentSlide);
+}
+
+// Auto-play carousel
+function startCarouselAutoPlay() {
+  setInterval(() => {
+    nextSlide();
+  }, 5000); // Change slide every 5 seconds
+}
+
 // Modal de Denúncia
 function openDenunciaModal() {
   const modal = document.getElementById('denunciaModal');
@@ -298,6 +341,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Configurar visibilidade inicial dos campos
   updateFormVisibility();
+  
+  // Start carousel autoplay
+  startCarouselAutoPlay();
 });
 
 // Contador animado para estatísticas
