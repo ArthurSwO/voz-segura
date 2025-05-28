@@ -54,11 +54,11 @@ function goToSlide(index) {
   showSlide(currentSlide);
 }
 
-// Auto-play carousel
+// Auto-play carousel - aumentado para 8 segundos
 function startCarouselAutoPlay() {
   setInterval(() => {
     nextSlide();
-  }, 5000); // Change slide every 5 seconds
+  }, 8000); // Aumentado de 5000 para 8000ms (8 segundos)
 }
 
 // Modal de Denúncia
@@ -262,6 +262,15 @@ function handleFormSubmit(e) {
     submitButton.textContent = originalText;
     submitButton.disabled = false;
   }, 2000);
+}
+
+// Nova função para abrir email de apoio
+function openEmailSupport() {
+  const subject = encodeURIComponent('Solicitação de Apoio Emocional - VOZ ATIVA');
+  const body = encodeURIComponent('Olá,\n\nGostaria de solicitar apoio emocional através da plataforma VOZ ATIVA.\n\nObrigado(a).');
+  const mailtoLink = `mailto:vozsegura.ba@gmail.com?subject=${subject}&body=${body}`;
+  
+  window.open(mailtoLink, '_blank');
 }
 
 // Adicionar efeito de scroll no header
