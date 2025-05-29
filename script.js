@@ -1,4 +1,3 @@
-
 // Smooth scrolling para seções
 function scrollToSection(sectionId) {
   console.log('Scrolling to section:', sectionId);
@@ -115,6 +114,42 @@ function closeDenunciaModal() {
   }
   
   updateFormVisibility();
+}
+
+// Modal de Apoio Emocional
+function openApoioModal() {
+  console.log('Opening apoio modal');
+  const modal = document.getElementById('apoioModal');
+  if (!modal) {
+    console.error('Apoio modal not found');
+    return;
+  }
+  
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  // Animar entrada do modal
+  setTimeout(() => {
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+      modalContent.style.transform = 'translateY(0) scale(1)';
+    }
+  }, 10);
+}
+
+function closeApoioModal() {
+  console.log('Closing apoio modal');
+  const modal = document.getElementById('apoioModal');
+  if (!modal) return;
+  
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+  
+  // Resetar formulário
+  const form = document.getElementById('apoioForm');
+  if (form) {
+    form.reset();
+  }
 }
 
 // Controle de visibilidade dos campos baseado no toggle anônimo
@@ -310,14 +345,42 @@ function handleFormSubmit(e) {
   }, 2000);
 }
 
-// Nova função para abrir email de apoio
-function openEmailSupport() {
-  console.log('Opening email support');
+// Submissão do formulário de apoio
+function handleApoioFormSubmit(e) {
+  console.log('Apoio form submit triggered');
+  e.preventDefault();
+  
+  const nome = document.getElementById('apoioNome')?.value || 'Anônimo';
+  const email = document.getElementById('apoioEmail')?.value || '';
+  const mensagem = document.getElementById('apoioMensagem')?.value || '';
+  
   const subject = encodeURIComponent('Solicitação de Apoio Emocional - VOZ ATIVA');
-  const body = encodeURIComponent('Olá,\n\nGostaria de solicitar apoio emocional através da plataforma VOZ ATIVA.\n\nObrigado(a).');
+  const body = encodeURIComponent(`Olá,
+
+Nome: ${nome}
+Email: ${email}
+
+Mensagem:
+${mensagem}
+
+Enviado através da plataforma VOZ ATIVA.`);
+  
   const mailtoLink = `mailto:vozsegura.ba@gmail.com?subject=${subject}&body=${body}`;
   
+  // Abrir cliente de email
   window.open(mailtoLink, '_blank');
+  
+  // Fechar modal após um breve delay
+  setTimeout(() => {
+    closeApoioModal();
+    alert('Sua solicitação foi preparada. Por favor, envie o email que foi aberto em seu cliente de email.');
+  }, 1000);
+}
+
+// Nova função para abrir email de apoio
+function openEmailSupport() {
+  console.log('Opening email support - redirecting to modal');
+  openApoioModal();
 }
 
 // Inicialização quando o DOM estiver carregado
@@ -365,17 +428,26 @@ function initializeApp() {
     btn.addEventListener('click', openDenunciaModal);
   });
   
-  const apoioButtons = document.querySelectorAll('[onclick*="openEmailSupport"]');
+  const apoioButtons = document.querySelectorAll('[onclick*="openApoioModal"], [onclick*="openEmailSupport"]');
   apoioButtons.forEach(btn => {
     btn.removeAttribute('onclick');
-    btn.addEventListener('click', openEmailSupport);
+    btn.addEventListener('click', openApoioModal);
   });
   
-  // Configurar modal
-  const closeModalBtn = document.querySelector('.close-modal');
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener('click', closeDenunciaModal);
-  }
+  // Configurar modais
+  const closeModalBtns = document.querySelectorAll('.close-modal');
+  closeModalBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const modal = this.closest('.modal-overlay');
+      if (modal) {
+        if (modal.id === 'denunciaModal') {
+          closeDenunciaModal();
+        } else if (modal.id === 'apoioModal') {
+          closeApoioModal();
+        }
+      }
+    });
+  });
   
   // Configurar upload de arquivos
   setupFileUpload();
@@ -390,6 +462,11 @@ function initializeApp() {
   const denunciaForm = document.getElementById('denunciaForm');
   if (denunciaForm) {
     denunciaForm.addEventListener('submit', handleFormSubmit);
+  }
+  
+  const apoioForm = document.getElementById('apoioForm');
+  if (apoioForm) {
+    apoioForm.addEventListener('submit', handleApoioFormSubmit);
   }
   
   // Configurar visibilidade inicial dos campos
@@ -411,18 +488,28 @@ if (document.readyState === 'loading') {
 // Fechar modal com ESC
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    const modal = document.getElementById('denunciaModal');
-    if (modal && modal.classList.contains('active')) {
+    const denunciaModal = document.getElementById('denunciaModal');
+    const apoioModal = document.getElementById('apoioModal');
+    
+    if (denunciaModal && denunciaModal.classList.contains('active')) {
       closeDenunciaModal();
+    }
+    if (apoioModal && apoioModal.classList.contains('active')) {
+      closeApoioModal();
     }
   }
 });
 
 // Fechar modal clicando fora dele
 document.addEventListener('click', function(e) {
-  const modal = document.getElementById('denunciaModal');
-  if (e.target === modal) {
+  const denunciaModal = document.getElementById('denunciaModal');
+  const apoioModal = document.getElementById('apoioModal');
+  
+  if (e.target === denunciaModal) {
     closeDenunciaModal();
+  }
+  if (e.target === apoioModal) {
+    closeApoioModal();
   }
 });
 
@@ -461,6 +548,8 @@ window.scrollToSection = scrollToSection;
 window.handleEmergencyExit = handleEmergencyExit;
 window.openDenunciaModal = openDenunciaModal;
 window.closeDenunciaModal = closeDenunciaModal;
+window.openApoioModal = openApoioModal;
+window.closeApoioModal = closeApoioModal;
 window.openEmailSupport = openEmailSupport;
 window.nextSlide = nextSlide;
 window.prevSlide = prevSlide;

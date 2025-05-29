@@ -136,6 +136,34 @@
       </div>
     </div>
 
+    <!-- Modal de Apoio Emocional -->
+    <div id="apoioModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Solicitar Apoio Emocional</h2>
+          <button class="close-modal" onclick="closeApoioModal()">×</button>
+        </div>
+        
+        <form id="apoioForm" class="apoio-form">
+          <div class="form-group">
+            <input type="text" id="apoioNome" placeholder="SEU NOME (OPCIONAL)" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <input type="email" id="apoioEmail" placeholder="SEU EMAIL (OPIONAL)" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <textarea id="apoioMensagem" placeholder="DESCREVA COMO PODEMOS TE AJUDAR" class="form-textarea" rows="6" required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-continuar">Enviar Solicitação</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <main>
       <section id="inicio" class="hero">
         <div class="container">
@@ -190,7 +218,7 @@
               <div class="card-icon">💬</div>
               <h3>Apoio Emocional</h3>
               <p>Converse com voluntários treinados em um ambiente seguro e confidencial.</p>
-              <button class="btn btn-secondary" onclick="openEmailSupport()">Buscar Apoio</button>
+              <button class="btn btn-secondary" onclick="openApoioModal()">Buscar Apoio</button>
             </div>
           </div>
         </div>
