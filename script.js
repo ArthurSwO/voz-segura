@@ -1,5 +1,7 @@
+
 // Smooth scrolling para seções
 function scrollToSection(sectionId) {
+  console.log('Scrolling to section:', sectionId);
   const element = document.getElementById(sectionId);
   if (element) {
     const headerHeight = document.querySelector('.header').offsetHeight;
@@ -14,6 +16,7 @@ function scrollToSection(sectionId) {
 
 // Função de saída rápida de emergência
 function handleEmergencyExit() {
+  console.log('Emergency exit triggered');
   // Redireciona para um site neutro para segurança
   window.location.href = 'https://www.google.com';
 }
@@ -23,39 +26,49 @@ let currentSlide = 0;
 const totalSlides = 2;
 
 function showSlide(index) {
+  console.log('Showing slide:', index);
   const track = document.getElementById('carouselTrack');
   const slides = document.querySelectorAll('.carousel-slide');
   const indicators = document.querySelectorAll('.indicator');
+  
+  if (!track || slides.length === 0) {
+    console.error('Carousel elements not found');
+    return;
+  }
   
   // Remove active class from all slides and indicators
   slides.forEach(slide => slide.classList.remove('active'));
   indicators.forEach(indicator => indicator.classList.remove('active'));
   
   // Add active class to current slide and indicator
-  slides[index].classList.add('active');
-  indicators[index].classList.add('active');
+  if (slides[index]) slides[index].classList.add('active');
+  if (indicators[index]) indicators[index].classList.add('active');
   
   // Move track
   track.style.transform = `translateX(-${index * 50}%)`;
 }
 
 function nextSlide() {
+  console.log('Next slide triggered');
   currentSlide = (currentSlide + 1) % totalSlides;
   showSlide(currentSlide);
 }
 
 function prevSlide() {
+  console.log('Previous slide triggered');
   currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
   showSlide(currentSlide);
 }
 
 function goToSlide(index) {
+  console.log('Go to slide:', index);
   currentSlide = index;
   showSlide(currentSlide);
 }
 
 // Auto-play carousel - aumentado para 8 segundos
 function startCarouselAutoPlay() {
+  console.log('Starting carousel autoplay');
   setInterval(() => {
     nextSlide();
   }, 8000); // Aumentado de 5000 para 8000ms (8 segundos)
@@ -63,33 +76,55 @@ function startCarouselAutoPlay() {
 
 // Modal de Denúncia
 function openDenunciaModal() {
+  console.log('Opening denuncia modal');
   const modal = document.getElementById('denunciaModal');
+  if (!modal) {
+    console.error('Modal not found');
+    return;
+  }
+  
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
   
   // Animar entrada do modal
   setTimeout(() => {
-    modal.querySelector('.modal-content').style.transform = 'translateY(0) scale(1)';
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+      modalContent.style.transform = 'translateY(0) scale(1)';
+    }
   }, 10);
 }
 
 function closeDenunciaModal() {
+  console.log('Closing denuncia modal');
   const modal = document.getElementById('denunciaModal');
+  if (!modal) return;
+  
   modal.classList.remove('active');
   document.body.style.overflow = 'auto';
   
   // Resetar formulário
-  document.getElementById('denunciaForm').reset();
-  document.getElementById('fileList').innerHTML = '';
+  const form = document.getElementById('denunciaForm');
+  if (form) {
+    form.reset();
+  }
+  
+  const fileList = document.getElementById('fileList');
+  if (fileList) {
+    fileList.innerHTML = '';
+  }
+  
   updateFormVisibility();
 }
 
 // Controle de visibilidade dos campos baseado no toggle anônimo
 function updateFormVisibility() {
-  const isAnonymous = document.getElementById('enviarAnonimo').checked;
+  const isAnonymous = document.getElementById('enviarAnonimo')?.checked || false;
   const nomeField = document.getElementById('nomeCompleto');
   const emailField = document.getElementById('email');
   const telefoneField = document.getElementById('telefone');
+  
+  if (!nomeField || !emailField || !telefoneField) return;
   
   if (isAnonymous) {
     nomeField.style.opacity = '0.5';
@@ -122,8 +157,14 @@ function setupFileUpload() {
   const fileUploadArea = document.getElementById('fileUploadArea');
   const fileList = document.getElementById('fileList');
   
+  if (!fileInput || !fileUploadArea || !fileList) {
+    console.error('File upload elements not found');
+    return;
+  }
+  
   // Click no upload area
   fileUploadArea.addEventListener('click', () => {
+    console.log('File upload area clicked');
     fileInput.click();
   });
   
@@ -149,6 +190,7 @@ function setupFileUpload() {
   });
   
   function handleFiles(files) {
+    console.log('Handling files:', files.length);
     Array.from(files).forEach(file => {
       // Verificar tamanho máximo (50MB)
       if (file.size > 50 * 1024 * 1024) {
@@ -205,6 +247,7 @@ function setupFileUpload() {
 }
 
 function removeFile(fileName, fileSize) {
+  console.log('Removing file:', fileName);
   uploadedFiles = uploadedFiles.filter(file => 
     !(file.name === fileName && file.size === fileSize)
   );
@@ -226,22 +269,23 @@ function removeFile(fileName, fileSize) {
 
 // Submissão do formulário
 function handleFormSubmit(e) {
+  console.log('Form submit triggered');
   e.preventDefault();
   
   const formData = new FormData();
-  const isAnonymous = document.getElementById('enviarAnonimo').checked;
+  const isAnonymous = document.getElementById('enviarAnonimo')?.checked || false;
   
   // Coletar dados do formulário
   if (!isAnonymous) {
-    formData.append('nomeCompleto', document.getElementById('nomeCompleto').value);
-    formData.append('email', document.getElementById('email').value);
-    formData.append('telefone', document.getElementById('telefone').value);
+    formData.append('nomeCompleto', document.getElementById('nomeCompleto')?.value || '');
+    formData.append('email', document.getElementById('email')?.value || '');
+    formData.append('telefone', document.getElementById('telefone')?.value || '');
   }
   
-  formData.append('data', document.getElementById('data').value);
-  formData.append('tipoOcorrencia', document.getElementById('tipoOcorrencia').value);
-  formData.append('descricao', document.getElementById('descricao').value);
-  formData.append('evidencias', document.getElementById('evidencias').value);
+  formData.append('data', document.getElementById('data')?.value || '');
+  formData.append('tipoOcorrencia', document.getElementById('tipoOcorrencia')?.value || '');
+  formData.append('descricao', document.getElementById('descricao')?.value || '');
+  formData.append('evidencias', document.getElementById('evidencias')?.value || '');
   formData.append('anonimo', isAnonymous);
   
   // Adicionar arquivos
@@ -251,6 +295,8 @@ function handleFormSubmit(e) {
   
   // Simulação de envio
   const submitButton = document.querySelector('.btn-continuar');
+  if (!submitButton) return;
+  
   const originalText = submitButton.textContent;
   
   submitButton.textContent = 'Enviando...';
@@ -266,6 +312,7 @@ function handleFormSubmit(e) {
 
 // Nova função para abrir email de apoio
 function openEmailSupport() {
+  console.log('Opening email support');
   const subject = encodeURIComponent('Solicitação de Apoio Emocional - VOZ ATIVA');
   const body = encodeURIComponent('Olá,\n\nGostaria de solicitar apoio emocional através da plataforma VOZ ATIVA.\n\nObrigado(a).');
   const mailtoLink = `mailto:vozsegura.ba@gmail.com?subject=${subject}&body=${body}`;
@@ -273,44 +320,99 @@ function openEmailSupport() {
   window.open(mailtoLink, '_blank');
 }
 
-// Adicionar efeito de scroll no header
-window.addEventListener('scroll', function() {
-  const header = document.querySelector('.header');
-  if (window.scrollY > 100) {
-    header.style.background = 'rgba(139, 92, 246, 0.95)';
-    header.style.backdropFilter = 'blur(10px)';
-  } else {
-    header.style.background = 'linear-gradient(135deg, #8B5CF6, #EC4899)';
-    header.style.backdropFilter = 'none';
-  }
-});
-
-// Animação dos cards quando entram na tela
-function animateOnScroll() {
-  const cards = document.querySelectorAll('.denuncia-card, .situacao-card, .contact-card, .direito-item, .procedimento-item');
+// Inicialização quando o DOM estiver carregado
+function initializeApp() {
+  console.log('Initializing app...');
   
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
+  // Configurar navegação
+  const navLinks = document.querySelectorAll('.nav-menu a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      scrollToSection(targetId);
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
   });
   
-  cards.forEach(card => {
-    observer.observe(card);
+  // Configurar botão de emergência
+  const emergencyBtn = document.querySelector('.emergency-exit');
+  if (emergencyBtn) {
+    emergencyBtn.addEventListener('click', handleEmergencyExit);
+  }
+  
+  // Configurar botões do carousel
+  const prevBtn = document.querySelector('.carousel-prev');
+  const nextBtn = document.querySelector('.carousel-next');
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', prevSlide);
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', nextSlide);
+  }
+  
+  // Configurar indicadores do carousel
+  const indicators = document.querySelectorAll('.indicator');
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => goToSlide(index));
   });
+  
+  // Configurar botões principais
+  const denunciaButtons = document.querySelectorAll('[onclick*="openDenunciaModal"]');
+  denunciaButtons.forEach(btn => {
+    btn.removeAttribute('onclick');
+    btn.addEventListener('click', openDenunciaModal);
+  });
+  
+  const apoioButtons = document.querySelectorAll('[onclick*="openEmailSupport"]');
+  apoioButtons.forEach(btn => {
+    btn.removeAttribute('onclick');
+    btn.addEventListener('click', openEmailSupport);
+  });
+  
+  // Configurar modal
+  const closeModalBtn = document.querySelector('.close-modal');
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeDenunciaModal);
+  }
+  
+  // Configurar upload de arquivos
+  setupFileUpload();
+  
+  // Configurar toggle anônimo
+  const toggleAnonimo = document.getElementById('enviarAnonimo');
+  if (toggleAnonimo) {
+    toggleAnonimo.addEventListener('change', updateFormVisibility);
+  }
+  
+  // Configurar submissão do formulário
+  const denunciaForm = document.getElementById('denunciaForm');
+  if (denunciaForm) {
+    denunciaForm.addEventListener('submit', handleFormSubmit);
+  }
+  
+  // Configurar visibilidade inicial dos campos
+  updateFormVisibility();
+  
+  // Iniciar carousel autoplay
+  startCarouselAutoPlay();
+  
+  console.log('App initialized successfully');
+}
+
+// Event listeners para carregamento da página
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
 }
 
 // Fechar modal com ESC
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     const modal = document.getElementById('denunciaModal');
-    if (modal.classList.contains('active')) {
+    if (modal && modal.classList.contains('active')) {
       closeDenunciaModal();
     }
   }
@@ -324,133 +426,19 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Smooth scroll para links de navegação
-document.addEventListener('DOMContentLoaded', function() {
-  // Adicionar event listeners para links de navegação
-  const navLinks = document.querySelectorAll('.nav-menu a');
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
-      scrollToSection(targetId);
-    });
-  });
+// Adicionar efeito de scroll no header
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.header');
+  if (!header) return;
   
-  // Configurar upload de arquivos
-  setupFileUpload();
-  
-  // Configurar toggle anônimo
-  document.getElementById('enviarAnonimo').addEventListener('change', updateFormVisibility);
-  
-  // Configurar submissão do formulário
-  document.getElementById('denunciaForm').addEventListener('submit', handleFormSubmit);
-  
-  // Inicializar animações
-  animateOnScroll();
-  
-  // Configurar visibilidade inicial dos campos
-  updateFormVisibility();
-  
-  // Start carousel autoplay
-  startCarouselAutoPlay();
-});
-
-// Contador animado para estatísticas
-function animateCounter() {
-  const statNumber = document.querySelector('.stat-number');
-  if (statNumber) {
-    const target = parseInt(statNumber.textContent);
-    let current = 0;
-    const increment = target / 100;
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-              current = target;
-              clearInterval(timer);
-            }
-            statNumber.textContent = Math.floor(current);
-          }, 20);
-          observer.unobserve(entry.target);
-        }
-      });
-    });
-    
-    observer.observe(statNumber);
+  if (window.scrollY > 100) {
+    header.style.background = 'rgba(139, 92, 246, 0.95)';
+    header.style.backdropFilter = 'blur(10px)';
+  } else {
+    header.style.background = 'linear-gradient(135deg, #8B5CF6, #EC4899)';
+    header.style.backdropFilter = 'none';
   }
-}
-
-// Função para destacar link ativo na navegação
-function updateActiveNav() {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-menu a');
-  
-  window.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 100;
-      if (window.pageYOffset >= sectionTop) {
-        current = section.getAttribute('id');
-      }
-    });
-    
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
-        link.classList.add('active');
-      }
-    });
-  });
-}
-
-// Adicionar efeito parallax suave
-function addParallaxEffect() {
-  window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallaxElements = document.querySelectorAll('.hero::before');
-    
-    parallaxElements.forEach(element => {
-      const speed = 0.5;
-      element.style.transform = `translateY(${scrolled * speed}px)`;
-    });
-  });
-}
-
-// Inicializar todas as funcionalidades
-document.addEventListener('DOMContentLoaded', function() {
-  animateCounter();
-  updateActiveNav();
-  addParallaxEffect();
 });
-
-// Adicionar animação de typing para o título
-function addTypingEffect() {
-  const title = document.querySelector('.hero-title');
-  if (title) {
-    const text = title.textContent;
-    title.textContent = '';
-    title.style.borderRight = '2px solid #8B5CF6';
-    
-    let i = 0;
-    const typeWriter = () => {
-      if (i < text.length) {
-        title.textContent += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 100);
-      } else {
-        setTimeout(() => {
-          title.style.borderRight = 'none';
-        }, 1000);
-      }
-    };
-    
-    setTimeout(typeWriter, 1000);
-  }
-}
 
 // Adicionar animação CSS para slideOutUp
 const style = document.createElement('style');
@@ -467,3 +455,14 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Expor funções globalmente para compatibilidade
+window.scrollToSection = scrollToSection;
+window.handleEmergencyExit = handleEmergencyExit;
+window.openDenunciaModal = openDenunciaModal;
+window.closeDenunciaModal = closeDenunciaModal;
+window.openEmailSupport = openEmailSupport;
+window.nextSlide = nextSlide;
+window.prevSlide = prevSlide;
+window.goToSlide = goToSlide;
+window.removeFile = removeFile;
