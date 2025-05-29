@@ -1,9 +1,10 @@
+
 // Smooth scrolling para seções
 function scrollToSection(sectionId) {
   console.log('Scrolling to section:', sectionId);
   const element = document.getElementById(sectionId);
   if (element) {
-    const headerHeight = document.querySelector('.header').offsetHeight;
+    const headerHeight = document.querySelector('.header')?.offsetHeight || 80;
     const elementPosition = element.offsetTop - headerHeight;
     
     window.scrollTo({
@@ -16,7 +17,6 @@ function scrollToSection(sectionId) {
 // Função de saída rápida de emergência
 function handleEmergencyExit() {
   console.log('Emergency exit triggered');
-  // Redireciona para um site neutro para segurança
   window.location.href = 'https://www.google.com';
 }
 
@@ -65,12 +65,17 @@ function goToSlide(index) {
   showSlide(currentSlide);
 }
 
-// Auto-play carousel - aumentado para 8 segundos
+// Auto-play carousel
+let carouselInterval;
+
 function startCarouselAutoPlay() {
   console.log('Starting carousel autoplay');
-  setInterval(() => {
+  if (carouselInterval) {
+    clearInterval(carouselInterval);
+  }
+  carouselInterval = setInterval(() => {
     nextSlide();
-  }, 8000); // Aumentado de 5000 para 8000ms (8 segundos)
+  }, 8000);
 }
 
 // Modal de Denúncia
@@ -85,7 +90,6 @@ function openDenunciaModal() {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
   
-  // Animar entrada do modal
   setTimeout(() => {
     const modalContent = modal.querySelector('.modal-content');
     if (modalContent) {
@@ -102,7 +106,6 @@ function closeDenunciaModal() {
   modal.classList.remove('active');
   document.body.style.overflow = 'auto';
   
-  // Resetar formulário
   const form = document.getElementById('denunciaForm');
   if (form) {
     form.reset();
@@ -128,7 +131,6 @@ function openApoioModal() {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
   
-  // Animar entrada do modal
   setTimeout(() => {
     const modalContent = modal.querySelector('.modal-content');
     if (modalContent) {
@@ -145,7 +147,6 @@ function closeApoioModal() {
   modal.classList.remove('active');
   document.body.style.overflow = 'auto';
   
-  // Resetar formulário
   const form = document.getElementById('apoioForm');
   if (form) {
     form.reset();
@@ -197,13 +198,11 @@ function setupFileUpload() {
     return;
   }
   
-  // Click no upload area
   fileUploadArea.addEventListener('click', () => {
     console.log('File upload area clicked');
     fileInput.click();
   });
   
-  // Drag and drop
   fileUploadArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     fileUploadArea.classList.add('dragover');
@@ -219,7 +218,6 @@ function setupFileUpload() {
     handleFiles(e.dataTransfer.files);
   });
   
-  // Seleção de arquivos
   fileInput.addEventListener('change', (e) => {
     handleFiles(e.target.files);
   });
@@ -227,13 +225,11 @@ function setupFileUpload() {
   function handleFiles(files) {
     console.log('Handling files:', files.length);
     Array.from(files).forEach(file => {
-      // Verificar tamanho máximo (50MB)
       if (file.size > 50 * 1024 * 1024) {
         alert(`Arquivo ${file.name} é muito grande. Máximo permitido: 50MB`);
         return;
       }
       
-      // Verificar se já não foi adicionado
       if (uploadedFiles.find(f => f.name === file.name && f.size === file.size)) {
         alert(`Arquivo ${file.name} já foi adicionado`);
         return;
@@ -287,7 +283,6 @@ function removeFile(fileName, fileSize) {
     !(file.name === fileName && file.size === fileSize)
   );
   
-  // Remover da visualização
   const fileItems = document.querySelectorAll('.file-item');
   fileItems.forEach(item => {
     const nameElement = item.querySelector('.file-name');
@@ -310,7 +305,6 @@ function handleFormSubmit(e) {
   const formData = new FormData();
   const isAnonymous = document.getElementById('enviarAnonimo')?.checked || false;
   
-  // Coletar dados do formulário
   if (!isAnonymous) {
     formData.append('nomeCompleto', document.getElementById('nomeCompleto')?.value || '');
     formData.append('email', document.getElementById('email')?.value || '');
@@ -323,12 +317,10 @@ function handleFormSubmit(e) {
   formData.append('evidencias', document.getElementById('evidencias')?.value || '');
   formData.append('anonimo', isAnonymous);
   
-  // Adicionar arquivos
   uploadedFiles.forEach((file, index) => {
     formData.append(`arquivo_${index}`, file);
   });
   
-  // Simulação de envio
   const submitButton = document.querySelector('.btn-continuar');
   if (!submitButton) return;
   
@@ -367,121 +359,116 @@ Enviado através da plataforma VOZ ATIVA.`);
   
   const mailtoLink = `mailto:vozsegura.ba@gmail.com?subject=${subject}&body=${body}`;
   
-  // Abrir cliente de email
   window.open(mailtoLink, '_blank');
   
-  // Fechar modal após um breve delay
   setTimeout(() => {
     closeApoioModal();
     alert('Sua solicitação foi preparada. Por favor, envie o email que foi aberto em seu cliente de email.');
   }, 1000);
 }
 
-// Nova função para abrir email de apoio
-function openEmailSupport() {
-  console.log('Opening email support - redirecting to modal');
-  openApoioModal();
+// Função para adicionar event listeners de forma segura
+function addEventListenerSafely(element, event, handler) {
+  if (element) {
+    element.removeEventListener(event, handler);
+    element.addEventListener(event, handler);
+    console.log(`Event listener added for ${event} on`, element);
+  }
 }
 
 // Inicialização quando o DOM estiver carregado
 function initializeApp() {
   console.log('Initializing app...');
   
-  // Configurar navegação
-  const navLinks = document.querySelectorAll('.nav-menu a');
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
-      scrollToSection(targetId);
+  // Aguardar um pouco para garantir que todos os elementos estão carregados
+  setTimeout(() => {
+    // Configurar navegação
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    navLinks.forEach(link => {
+      addEventListenerSafely(link, 'click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        scrollToSection(targetId);
+      });
     });
-  });
-  
-  // Configurar botão de emergência
-  const emergencyBtn = document.querySelector('.emergency-exit');
-  if (emergencyBtn) {
-    emergencyBtn.addEventListener('click', handleEmergencyExit);
-  }
-  
-  // Configurar botões do carousel
-  const prevBtn = document.querySelector('.carousel-prev');
-  const nextBtn = document.querySelector('.carousel-next');
-  
-  if (prevBtn) {
-    prevBtn.addEventListener('click', prevSlide);
-  }
-  
-  if (nextBtn) {
-    nextBtn.addEventListener('click', nextSlide);
-  }
-  
-  // Configurar indicadores do carousel
-  const indicators = document.querySelectorAll('.indicator');
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => goToSlide(index));
-  });
-  
-  // Configurar botões principais
-  const denunciaButtons = document.querySelectorAll('[onclick*="openDenunciaModal"]');
-  denunciaButtons.forEach(btn => {
-    btn.removeAttribute('onclick');
-    btn.addEventListener('click', openDenunciaModal);
-  });
-  
-  const apoioButtons = document.querySelectorAll('[onclick*="openApoioModal"], [onclick*="openEmailSupport"]');
-  apoioButtons.forEach(btn => {
-    btn.removeAttribute('onclick');
-    btn.addEventListener('click', openApoioModal);
-  });
-  
-  // Configurar modais
-  const closeModalBtns = document.querySelectorAll('.close-modal');
-  closeModalBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const modal = this.closest('.modal-overlay');
-      if (modal) {
-        if (modal.id === 'denunciaModal') {
-          closeDenunciaModal();
-        } else if (modal.id === 'apoioModal') {
-          closeApoioModal();
-        }
+    
+    // Configurar botão de emergência
+    const emergencyBtn = document.querySelector('.emergency-exit');
+    addEventListenerSafely(emergencyBtn, 'click', handleEmergencyExit);
+    
+    // Configurar botões do carousel
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    
+    addEventListenerSafely(prevBtn, 'click', prevSlide);
+    addEventListenerSafely(nextBtn, 'click', nextSlide);
+    
+    // Configurar indicadores do carousel
+    const indicators = document.querySelectorAll('.indicator');
+    indicators.forEach((indicator, index) => {
+      addEventListenerSafely(indicator, 'click', () => goToSlide(index));
+    });
+    
+    // Configurar botões principais - remover onclick e adicionar event listeners
+    const denunciaButtons = document.querySelectorAll('button');
+    denunciaButtons.forEach(btn => {
+      const text = btn.textContent?.trim();
+      if (text?.includes('Fazer Denúncia') || text?.includes('Denunciar Agora')) {
+        btn.removeAttribute('onclick');
+        addEventListenerSafely(btn, 'click', openDenunciaModal);
+      }
+      if (text?.includes('Buscar Apoio') || text?.includes('Apoio Emocional')) {
+        btn.removeAttribute('onclick');
+        addEventListenerSafely(btn, 'click', openApoioModal);
+      }
+      if (text?.includes('Ver Orientações') || text?.includes('Orientações Jurídicas')) {
+        btn.removeAttribute('onclick');
+        addEventListenerSafely(btn, 'click', () => scrollToSection('orientacoes'));
       }
     });
-  });
-  
-  // Configurar upload de arquivos
-  setupFileUpload();
-  
-  // Configurar toggle anônimo
-  const toggleAnonimo = document.getElementById('enviarAnonimo');
-  if (toggleAnonimo) {
-    toggleAnonimo.addEventListener('change', updateFormVisibility);
-  }
-  
-  // Configurar submissão do formulário
-  const denunciaForm = document.getElementById('denunciaForm');
-  if (denunciaForm) {
-    denunciaForm.addEventListener('submit', handleFormSubmit);
-  }
-  
-  const apoioForm = document.getElementById('apoioForm');
-  if (apoioForm) {
-    apoioForm.addEventListener('submit', handleApoioFormSubmit);
-  }
-  
-  // Configurar visibilidade inicial dos campos
-  updateFormVisibility();
-  
-  // Iniciar carousel autoplay
-  startCarouselAutoPlay();
-  
-  console.log('App initialized successfully');
+    
+    // Configurar modais
+    const closeModalBtns = document.querySelectorAll('.close-modal');
+    closeModalBtns.forEach(btn => {
+      addEventListenerSafely(btn, 'click', function() {
+        const modal = this.closest('.modal-overlay');
+        if (modal) {
+          if (modal.id === 'denunciaModal') {
+            closeDenunciaModal();
+          } else if (modal.id === 'apoioModal') {
+            closeApoioModal();
+          }
+        }
+      });
+    });
+    
+    // Configurar upload de arquivos
+    setupFileUpload();
+    
+    // Configurar toggle anônimo
+    const toggleAnonimo = document.getElementById('enviarAnonimo');
+    addEventListenerSafely(toggleAnonimo, 'change', updateFormVisibility);
+    
+    // Configurar submissão do formulário
+    const denunciaForm = document.getElementById('denunciaForm');
+    addEventListenerSafely(denunciaForm, 'submit', handleFormSubmit);
+    
+    const apoioForm = document.getElementById('apoioForm');
+    addEventListenerSafely(apoioForm, 'submit', handleApoioFormSubmit);
+    
+    // Configurar visibilidade inicial dos campos
+    updateFormVisibility();
+    
+    // Iniciar carousel autoplay
+    startCarouselAutoPlay();
+    
+    console.log('App initialized successfully');
+  }, 100);
 }
 
-// Event listeners para carregamento da página
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApp);
-} else {
+// Event listeners principais
+document.addEventListener('DOMContentLoaded', initializeApp);
+if (document.readyState !== 'loading') {
   initializeApp();
 }
 
@@ -491,10 +478,10 @@ document.addEventListener('keydown', function(e) {
     const denunciaModal = document.getElementById('denunciaModal');
     const apoioModal = document.getElementById('apoioModal');
     
-    if (denunciaModal && denunciaModal.classList.contains('active')) {
+    if (denunciaModal?.classList.contains('active')) {
       closeDenunciaModal();
     }
-    if (apoioModal && apoioModal.classList.contains('active')) {
+    if (apoioModal?.classList.contains('active')) {
       closeApoioModal();
     }
   }
@@ -513,7 +500,7 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Adicionar efeito de scroll no header
+// Efeito de scroll no header
 window.addEventListener('scroll', function() {
   const header = document.querySelector('.header');
   if (!header) return;
@@ -527,7 +514,7 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Adicionar animação CSS para slideOutUp
+// Adicionar animação CSS
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slideOutUp {
@@ -543,14 +530,13 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Expor funções globalmente para compatibilidade
+// Expor funções globalmente
 window.scrollToSection = scrollToSection;
 window.handleEmergencyExit = handleEmergencyExit;
 window.openDenunciaModal = openDenunciaModal;
 window.closeDenunciaModal = closeDenunciaModal;
 window.openApoioModal = openApoioModal;
 window.closeApoioModal = closeApoioModal;
-window.openEmailSupport = openEmailSupport;
 window.nextSlide = nextSlide;
 window.prevSlide = prevSlide;
 window.goToSlide = goToSlide;
