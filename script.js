@@ -346,7 +346,7 @@ function handleApoioFormSubmit(e) {
   const email = document.getElementById('apoioEmail')?.value || '';
   const mensagem = document.getElementById('apoioMensagem')?.value || '';
   
-  const subject = encodeURIComponent('Solicitação de Apoio Emocional - VOZ ATIVA');
+  const subject = encodeURIComponent('Solicitação de Apoio Emocional - VOZ SEGURA');
   const body = encodeURIComponent(`Olá,
 
 Nome: ${nome}
@@ -355,7 +355,7 @@ Email: ${email}
 Mensagem:
 ${mensagem}
 
-Enviado através da plataforma VOZ ATIVA.`);
+Enviado através da plataforma VOZ SEGURA.`);
   
   const mailtoLink = `mailto:vozsegura.ba@gmail.com?subject=${subject}&body=${body}`;
   
