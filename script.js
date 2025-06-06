@@ -28,29 +28,55 @@ function showSlide(index) {
   const slides = document.querySelectorAll('.carousel-slide');
   const indicators = document.querySelectorAll('.indicator');
   
+  console.log('Total slides found:', slides.length);
+  console.log('Total indicators found:', indicators.length);
+  
   if (slides.length === 0) {
     console.error('Carousel slides not found');
     return;
   }
+  
+  // Log current slide states before changes
+  slides.forEach((slide, i) => {
+    console.log(`Slide ${i} classes before:`, slide.className);
+    const img = slide.querySelector('img');
+    if (img) {
+      console.log(`Slide ${i} image src:`, img.src);
+      console.log(`Slide ${i} image loaded:`, img.complete);
+    }
+  });
   
   // Remove active class from all slides and indicators
   slides.forEach(slide => slide.classList.remove('active'));
   indicators.forEach(indicator => indicator.classList.remove('active'));
   
   // Add active class to current slide and indicator
-  if (slides[index]) slides[index].classList.add('active');
-  if (indicators[index]) indicators[index].classList.add('active');
+  if (slides[index]) {
+    slides[index].classList.add('active');
+    console.log(`Added active class to slide ${index}`);
+  }
+  if (indicators[index]) {
+    indicators[index].classList.add('active');
+    console.log(`Added active class to indicator ${index}`);
+  }
+  
+  // Log current slide states after changes
+  slides.forEach((slide, i) => {
+    console.log(`Slide ${i} classes after:`, slide.className);
+  });
 }
 
 function nextSlide() {
-  console.log('Next slide triggered');
+  console.log('Next slide triggered, current:', currentSlide);
   currentSlide = (currentSlide + 1) % totalSlides;
+  console.log('New current slide:', currentSlide);
   showSlide(currentSlide);
 }
 
 function prevSlide() {
-  console.log('Previous slide triggered');
+  console.log('Previous slide triggered, current:', currentSlide);
   currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+  console.log('New current slide:', currentSlide);
   showSlide(currentSlide);
 }
 
@@ -69,6 +95,7 @@ function startCarouselAutoPlay() {
     clearInterval(carouselInterval);
   }
   carouselInterval = setInterval(() => {
+    console.log('Auto-advancing carousel...');
     nextSlide();
   }, 5000); // 5 segundos
 }
@@ -170,7 +197,8 @@ function updateFormVisibility() {
   } else {
     nomeField.style.opacity = '1';
     emailField.style.opacity = '1';
-    telefoneField.required = true;
+    telefoneField.style.opacity = '1';
+    nomeField.required = true;
     emailField.required = true;
     telefoneField.required = true;
     nomeField.placeholder = 'NOME COMPLETO';
@@ -367,6 +395,33 @@ function initializeApp() {
   
   // Aguardar um pouco para garantir que todos os elementos estão carregados
   setTimeout(() => {
+    // Log carousel elements
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const carouselContainer = document.querySelector('.carousel-container');
+    
+    console.log('Carousel container found:', !!carouselContainer);
+    console.log('Slides found:', slides.length);
+    console.log('Indicators found:', indicators.length);
+    
+    // Check images
+    slides.forEach((slide, index) => {
+      const img = slide.querySelector('img');
+      if (img) {
+        console.log(`Image ${index} src:`, img.src);
+        console.log(`Image ${index} alt:`, img.alt);
+        
+        img.onload = () => {
+          console.log(`Image ${index} loaded successfully`);
+        };
+        
+        img.onerror = (error) => {
+          console.error(`Image ${index} failed to load:`, error);
+          console.error(`Failed image src:`, img.src);
+        };
+      }
+    });
+    
     // Configurar navegação
     const navLinks = document.querySelectorAll('.nav-menu a');
     navLinks.forEach(link => {
@@ -387,13 +442,20 @@ function initializeApp() {
     const prevBtn = document.querySelector('.carousel-prev');
     const nextBtn = document.querySelector('.carousel-next');
     
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    if (prevBtn) {
+      prevBtn.addEventListener('click', prevSlide);
+      console.log('Previous button configured');
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', nextSlide);
+      console.log('Next button configured');
+    }
     
     // Configurar indicadores do carousel
     const indicators = document.querySelectorAll('.indicator');
     indicators.forEach((indicator, index) => {
       indicator.addEventListener('click', () => goToSlide(index));
+      console.log(`Indicator ${index} configured`);
     });
     
     // Configurar botões principais usando data-action
@@ -456,6 +518,7 @@ function initializeApp() {
     updateFormVisibility();
     
     // Inicializar carrossel
+    console.log('Initializing carousel...');
     showSlide(0);
     
     // Iniciar carousel autoplay
