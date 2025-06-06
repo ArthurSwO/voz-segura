@@ -29,7 +29,7 @@
             <a href="#orientacoes">Orientações</a>
           </nav>
 
-          <button class="emergency-exit" onclick="handleEmergencyExit()">
+          <button class="emergency-exit">
             <span>⚠️</span>
             Saída Rápida
           </button>
@@ -49,12 +49,12 @@
           </div>
         </div>
         
-        <button class="carousel-btn carousel-prev" onclick="prevSlide()">❮</button>
-        <button class="carousel-btn carousel-next" onclick="nextSlide()">❯</button>
+        <button class="carousel-btn carousel-prev">❮</button>
+        <button class="carousel-btn carousel-next">❯</button>
         
         <div class="carousel-indicators">
-          <span class="indicator active" onclick="goToSlide(0)"></span>
-          <span class="indicator" onclick="goToSlide(1)"></span>
+          <span class="indicator active"></span>
+          <span class="indicator"></span>
         </div>
       </div>
     </section>
@@ -64,7 +64,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2>Fazer Denúncia</h2>
-          <button class="close-modal" onclick="closeDenunciaModal()">×</button>
+          <button class="close-modal">×</button>
         </div>
         
         <form id="denunciaForm" class="denuncia-form">
@@ -141,7 +141,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2>Solicitar Apoio Emocional</h2>
-          <button class="close-modal" onclick="closeApoioModal()">×</button>
+          <button class="close-modal">×</button>
         </div>
         
         <form id="apoioForm" class="apoio-form">
@@ -175,10 +175,10 @@
             </p>
             
             <div class="hero-buttons">
-              <button class="btn btn-primary" onclick="openDenunciaModal()">
+              <button class="btn btn-primary" data-action="denuncia">
                 Fazer Denúncia
               </button>
-              <button class="btn btn-secondary" onclick="scrollToSection('orientacoes')">
+              <button class="btn btn-secondary" data-action="orientacoes">
                 Orientações Jurídicas
               </button>
             </div>
@@ -204,21 +204,21 @@
               <div class="card-icon">📝</div>
               <h3>Denúncias Seguras</h3>
               <p>Relate violações de direitos de forma anônima ou identificada, com total proteção de dados.</p>
-              <button class="btn btn-primary" onclick="openDenunciaModal()">Denunciar Agora</button>
+              <button class="btn btn-primary" data-action="denuncia">Denunciar Agora</button>
             </div>
 
             <div class="denuncia-card">
               <div class="card-icon">⚖️</div>
               <h3>Orientação Jurídica</h3>
               <p>Acesse informações sobre seus direitos e orientações de profissionais especializados.</p>
-              <button class="btn btn-secondary" onclick="scrollToSection('orientacoes')">Ver Orientações</button>
+              <button class="btn btn-secondary" data-action="orientacoes">Ver Orientações</button>
             </div>
 
             <div class="denuncia-card">
               <div class="card-icon">💬</div>
               <h3>Apoio Emocional</h3>
               <p>Converse com voluntários treinados em um ambiente seguro e confidencial.</p>
-              <button class="btn btn-secondary" onclick="openApoioModal()">Buscar Apoio</button>
+              <button class="btn btn-secondary" data-action="apoio">Buscar Apoio</button>
             </div>
           </div>
         </div>

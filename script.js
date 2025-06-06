@@ -44,7 +44,7 @@ function showSlide(index) {
   if (indicators[index]) indicators[index].classList.add('active');
   
   // Move track
-  track.style.transform = `translateX(-${index * 50}%)`;
+  track.style.transform = `translateX(-${index * 100}%)`;
 }
 
 function nextSlide() {
@@ -367,15 +367,6 @@ Enviado através da plataforma VOZ SEGURA.`);
   }, 1000);
 }
 
-// Função para adicionar event listeners de forma segura
-function addEventListenerSafely(element, event, handler) {
-  if (element) {
-    element.removeEventListener(event, handler);
-    element.addEventListener(event, handler);
-    console.log(`Event listener added for ${event} on`, element);
-  }
-}
-
 // Inicialização quando o DOM estiver carregado
 function initializeApp() {
   console.log('Initializing app...');
@@ -385,7 +376,7 @@ function initializeApp() {
     // Configurar navegação
     const navLinks = document.querySelectorAll('.nav-menu a');
     navLinks.forEach(link => {
-      addEventListenerSafely(link, 'click', function(e) {
+      link.addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').substring(1);
         scrollToSection(targetId);
@@ -394,43 +385,46 @@ function initializeApp() {
     
     // Configurar botão de emergência
     const emergencyBtn = document.querySelector('.emergency-exit');
-    addEventListenerSafely(emergencyBtn, 'click', handleEmergencyExit);
+    if (emergencyBtn) {
+      emergencyBtn.addEventListener('click', handleEmergencyExit);
+    }
     
     // Configurar botões do carousel
     const prevBtn = document.querySelector('.carousel-prev');
     const nextBtn = document.querySelector('.carousel-next');
     
-    addEventListenerSafely(prevBtn, 'click', prevSlide);
-    addEventListenerSafely(nextBtn, 'click', nextSlide);
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
     
     // Configurar indicadores do carousel
     const indicators = document.querySelectorAll('.indicator');
     indicators.forEach((indicator, index) => {
-      addEventListenerSafely(indicator, 'click', () => goToSlide(index));
+      indicator.addEventListener('click', () => goToSlide(index));
     });
     
-    // Configurar botões principais - remover onclick e adicionar event listeners
-    const denunciaButtons = document.querySelectorAll('button');
+    // Configurar botões principais - usar querySelectorAll mais específico
+    const denunciaButtons = document.querySelectorAll('[onclick*="openDenunciaModal"], .btn:contains("Fazer Denúncia"), .btn:contains("Denunciar Agora")');
     denunciaButtons.forEach(btn => {
-      const text = btn.textContent?.trim();
-      if (text?.includes('Fazer Denúncia') || text?.includes('Denunciar Agora')) {
-        btn.removeAttribute('onclick');
-        addEventListenerSafely(btn, 'click', openDenunciaModal);
-      }
-      if (text?.includes('Buscar Apoio') || text?.includes('Apoio Emocional')) {
-        btn.removeAttribute('onclick');
-        addEventListenerSafely(btn, 'click', openApoioModal);
-      }
-      if (text?.includes('Ver Orientações') || text?.includes('Orientações Jurídicas')) {
-        btn.removeAttribute('onclick');
-        addEventListenerSafely(btn, 'click', () => scrollToSection('orientacoes'));
-      }
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', openDenunciaModal);
+    });
+    
+    const apoioButtons = document.querySelectorAll('[onclick*="openApoioModal"], .btn:contains("Buscar Apoio")');
+    apoioButtons.forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', openApoioModal);
+    });
+    
+    const orientacaoButtons = document.querySelectorAll('[onclick*="scrollToSection"], .btn:contains("Ver Orientações"), .btn:contains("Orientações Jurídicas")');
+    orientacaoButtons.forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', () => scrollToSection('orientacoes'));
     });
     
     // Configurar modais
     const closeModalBtns = document.querySelectorAll('.close-modal');
     closeModalBtns.forEach(btn => {
-      addEventListenerSafely(btn, 'click', function() {
+      btn.addEventListener('click', function() {
         const modal = this.closest('.modal-overlay');
         if (modal) {
           if (modal.id === 'denunciaModal') {
@@ -447,14 +441,20 @@ function initializeApp() {
     
     // Configurar toggle anônimo
     const toggleAnonimo = document.getElementById('enviarAnonimo');
-    addEventListenerSafely(toggleAnonimo, 'change', updateFormVisibility);
+    if (toggleAnonimo) {
+      toggleAnonimo.addEventListener('change', updateFormVisibility);
+    }
     
     // Configurar submissão do formulário
     const denunciaForm = document.getElementById('denunciaForm');
-    addEventListenerSafely(denunciaForm, 'submit', handleFormSubmit);
+    if (denunciaForm) {
+      denunciaForm.addEventListener('submit', handleFormSubmit);
+    }
     
     const apoioForm = document.getElementById('apoioForm');
-    addEventListenerSafely(apoioForm, 'submit', handleApoioFormSubmit);
+    if (apoioForm) {
+      apoioForm.addEventListener('submit', handleApoioFormSubmit);
+    }
     
     // Configurar visibilidade inicial dos campos
     updateFormVisibility();
@@ -530,7 +530,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Expor funções globalmente
+// Expor funções globalmente para compatibilidade
 window.scrollToSection = scrollToSection;
 window.handleEmergencyExit = handleEmergencyExit;
 window.openDenunciaModal = openDenunciaModal;
@@ -541,3 +541,4 @@ window.nextSlide = nextSlide;
 window.prevSlide = prevSlide;
 window.goToSlide = goToSlide;
 window.removeFile = removeFile;
+
