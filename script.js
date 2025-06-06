@@ -1,4 +1,3 @@
-
 // Smooth scrolling para seções
 function scrollToSection(sectionId) {
   console.log('Scrolling to section:', sectionId);
@@ -26,12 +25,11 @@ const totalSlides = 2;
 
 function showSlide(index) {
   console.log('Showing slide:', index);
-  const track = document.getElementById('carouselTrack');
   const slides = document.querySelectorAll('.carousel-slide');
   const indicators = document.querySelectorAll('.indicator');
   
-  if (!track || slides.length === 0) {
-    console.error('Carousel elements not found');
+  if (slides.length === 0) {
+    console.error('Carousel slides not found');
     return;
   }
   
@@ -42,9 +40,6 @@ function showSlide(index) {
   // Add active class to current slide and indicator
   if (slides[index]) slides[index].classList.add('active');
   if (indicators[index]) indicators[index].classList.add('active');
-  
-  // Move track
-  track.style.transform = `translateX(-${index * 100}%)`;
 }
 
 function nextSlide() {
@@ -65,7 +60,7 @@ function goToSlide(index) {
   showSlide(currentSlide);
 }
 
-// Auto-play carousel
+// Auto-play carousel - mudança a cada 5 segundos
 let carouselInterval;
 
 function startCarouselAutoPlay() {
@@ -75,7 +70,7 @@ function startCarouselAutoPlay() {
   }
   carouselInterval = setInterval(() => {
     nextSlide();
-  }, 8000);
+  }, 5000); // 5 segundos
 }
 
 // Modal de Denúncia
@@ -175,8 +170,7 @@ function updateFormVisibility() {
   } else {
     nomeField.style.opacity = '1';
     emailField.style.opacity = '1';
-    telefoneField.style.opacity = '1';
-    nomeField.required = true;
+    telefoneField.required = true;
     emailField.required = true;
     telefoneField.required = true;
     nomeField.placeholder = 'NOME COMPLETO';
@@ -402,23 +396,25 @@ function initializeApp() {
       indicator.addEventListener('click', () => goToSlide(index));
     });
     
-    // Configurar botões principais - usar querySelectorAll mais específico
-    const denunciaButtons = document.querySelectorAll('[onclick*="openDenunciaModal"], .btn:contains("Fazer Denúncia"), .btn:contains("Denunciar Agora")');
-    denunciaButtons.forEach(btn => {
-      btn.removeAttribute('onclick');
-      btn.addEventListener('click', openDenunciaModal);
-    });
-    
-    const apoioButtons = document.querySelectorAll('[onclick*="openApoioModal"], .btn:contains("Buscar Apoio")');
-    apoioButtons.forEach(btn => {
-      btn.removeAttribute('onclick');
-      btn.addEventListener('click', openApoioModal);
-    });
-    
-    const orientacaoButtons = document.querySelectorAll('[onclick*="scrollToSection"], .btn:contains("Ver Orientações"), .btn:contains("Orientações Jurídicas")');
-    orientacaoButtons.forEach(btn => {
-      btn.removeAttribute('onclick');
-      btn.addEventListener('click', () => scrollToSection('orientacoes'));
+    // Configurar botões principais usando data-action
+    const buttons = document.querySelectorAll('[data-action]');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const action = this.getAttribute('data-action');
+        console.log('Button clicked with action:', action);
+        
+        switch(action) {
+          case 'denuncia':
+            openDenunciaModal();
+            break;
+          case 'orientacoes':
+            scrollToSection('orientacoes');
+            break;
+          case 'apoio':
+            openApoioModal();
+            break;
+        }
+      });
     });
     
     // Configurar modais
@@ -458,6 +454,9 @@ function initializeApp() {
     
     // Configurar visibilidade inicial dos campos
     updateFormVisibility();
+    
+    // Inicializar carrossel
+    showSlide(0);
     
     // Iniciar carousel autoplay
     startCarouselAutoPlay();
@@ -541,4 +540,3 @@ window.nextSlide = nextSlide;
 window.prevSlide = prevSlide;
 window.goToSlide = goToSlide;
 window.removeFile = removeFile;
-
