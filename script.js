@@ -1,3 +1,4 @@
+
 // Smooth scrolling para seções
 function scrollToSection(sectionId) {
   console.log('Scrolling to section:', sectionId);
@@ -34,6 +35,16 @@ function showSlide(index) {
   if (slides.length === 0) {
     console.error('Carousel slides not found');
     return;
+  }
+  
+  // Garantir que o índice está dentro do range válido
+  if (index >= slides.length) {
+    index = 0;
+    currentSlide = 0;
+  }
+  if (index < 0) {
+    index = slides.length - 1;
+    currentSlide = slides.length - 1;
   }
   
   // Log current slide states before changes
@@ -419,6 +430,11 @@ function initializeApp() {
           console.error(`Image ${index} failed to load:`, error);
           console.error(`Failed image src:`, img.src);
         };
+        
+        // Forçar reload da imagem se necessário
+        if (!img.complete) {
+          img.src = img.src + '?t=' + Date.now();
+        }
       }
     });
     
@@ -428,6 +444,7 @@ function initializeApp() {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').substring(1);
+        console.log('Nav link clicked:', targetId);
         scrollToSection(targetId);
       });
     });
@@ -435,7 +452,11 @@ function initializeApp() {
     // Configurar botão de emergência
     const emergencyBtn = document.querySelector('.emergency-exit');
     if (emergencyBtn) {
-      emergencyBtn.addEventListener('click', handleEmergencyExit);
+      emergencyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Emergency button clicked');
+        handleEmergencyExit();
+      });
     }
     
     // Configurar botões do carousel
@@ -443,25 +464,38 @@ function initializeApp() {
     const nextBtn = document.querySelector('.carousel-next');
     
     if (prevBtn) {
-      prevBtn.addEventListener('click', prevSlide);
+      prevBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Previous button clicked');
+        prevSlide();
+      });
       console.log('Previous button configured');
     }
     if (nextBtn) {
-      nextBtn.addEventListener('click', nextSlide);
+      nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Next button clicked');
+        nextSlide();
+      });
       console.log('Next button configured');
     }
     
     // Configurar indicadores do carousel
-    const indicators = document.querySelectorAll('.indicator');
     indicators.forEach((indicator, index) => {
-      indicator.addEventListener('click', () => goToSlide(index));
+      indicator.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Indicator clicked:', index);
+        goToSlide(index);
+      });
       console.log(`Indicator ${index} configured`);
     });
     
     // Configurar botões principais usando data-action
     const buttons = document.querySelectorAll('[data-action]');
+    console.log('Found buttons with data-action:', buttons.length);
     buttons.forEach(btn => {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
         const action = this.getAttribute('data-action');
         console.log('Button clicked with action:', action);
         
@@ -475,6 +509,8 @@ function initializeApp() {
           case 'apoio':
             openApoioModal();
             break;
+          default:
+            console.warn('Unknown action:', action);
         }
       });
     });
@@ -482,7 +518,8 @@ function initializeApp() {
     // Configurar modais
     const closeModalBtns = document.querySelectorAll('.close-modal');
     closeModalBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
         const modal = this.closest('.modal-overlay');
         if (modal) {
           if (modal.id === 'denunciaModal') {
@@ -525,7 +562,7 @@ function initializeApp() {
     startCarouselAutoPlay();
     
     console.log('App initialized successfully');
-  }, 100);
+  }, 500); // Aumentei o timeout para 500ms
 }
 
 // Event listeners principais

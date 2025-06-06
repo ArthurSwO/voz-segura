@@ -1,3 +1,4 @@
+
 /* ... keep existing code (reset, body, container styles) */
 * {
   margin: 0;
@@ -130,7 +131,7 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Carousel Styles */
+/* Carousel Styles - CORRIGIDO */
 .carousel-section {
   margin-top: 80px;
   position: relative;
@@ -157,12 +158,14 @@ body {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+  visibility: hidden;
+  transition: all 1s ease-in-out;
   z-index: 1;
 }
 
 .carousel-slide.active {
   opacity: 1;
+  visibility: visible;
   z-index: 2;
 }
 
@@ -172,13 +175,17 @@ body {
   object-fit: cover;
   object-position: center;
   display: block;
+  /* Forçar o carregamento das imagens */
+  image-rendering: auto;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
   width: 50px;
@@ -186,12 +193,15 @@ body {
   font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 10;
+  z-index: 100;
+  color: #333;
+  font-weight: bold;
 }
 
 .carousel-btn:hover {
   background: rgba(255, 255, 255, 1);
   transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-prev {
@@ -209,7 +219,7 @@ body {
   transform: translateX(-50%);
   display: flex;
   gap: 10px;
-  z-index: 10;
+  z-index: 100;
 }
 
 .indicator {
@@ -219,12 +229,16 @@ body {
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .indicator.active {
   background: white;
-  transform: scale(1.2);
+  transform: scale(1.3);
+  border-color: white;
 }
+
+/* ... keep existing code (modal, form, hero, section styles) */
 
 /* Modal Styles */
 .modal-overlay {
@@ -729,6 +743,8 @@ input:checked + .slider:before {
   opacity: 0.9;
 }
 
+/* ... keep existing code (sections, orientações, emergency-contacts, footer styles) */
+
 /* Sections */
 .denuncias-section, .orientacoes-section, .emergency-contacts {
   padding: 80px 0;
@@ -921,8 +937,6 @@ input:checked + .slider:before {
   color: #666;
   font-size: 0.9rem;
 }
-
-/* ... keep existing code (situações, emergency-contacts, footer styles) */
 
 /* Situações Comuns */
 .situacoes-comuns {
@@ -1182,6 +1196,24 @@ input:checked + .slider:before {
 .footer-links a:hover {
   color: #8B5CF6;
   transform: translateY(-2px);
+}
+
+.contact-email {
+  margin-top: 1rem;
+}
+
+.email-address {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #8B5CF6;
+  margin-bottom: 0.5rem;
+}
+
+.development-credit {
+  font-size: 0.8rem;
+  color: #D1D5DB;
+  opacity: 0.8;
+  line-height: 1.4;
 }
 
 /* Animations */
