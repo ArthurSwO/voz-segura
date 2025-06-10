@@ -29,9 +29,6 @@ function showSlide(index) {
   const slides = document.querySelectorAll('.carousel-slide');
   const indicators = document.querySelectorAll('.indicator');
   
-  console.log('Total slides found:', slides.length);
-  console.log('Total indicators found:', indicators.length);
-  
   if (slides.length === 0) {
     console.error('Carousel slides not found');
     return;
@@ -47,16 +44,6 @@ function showSlide(index) {
     currentSlide = slides.length - 1;
   }
   
-  // Log current slide states before changes
-  slides.forEach((slide, i) => {
-    console.log(`Slide ${i} classes before:`, slide.className);
-    const img = slide.querySelector('img');
-    if (img) {
-      console.log(`Slide ${i} image src:`, img.src);
-      console.log(`Slide ${i} image loaded:`, img.complete);
-    }
-  });
-  
   // Remove active class from all slides and indicators
   slides.forEach(slide => slide.classList.remove('active'));
   indicators.forEach(indicator => indicator.classList.remove('active'));
@@ -70,11 +57,6 @@ function showSlide(index) {
     indicators[index].classList.add('active');
     console.log(`Added active class to indicator ${index}`);
   }
-  
-  // Log current slide states after changes
-  slides.forEach((slide, i) => {
-    console.log(`Slide ${i} classes after:`, slide.className);
-  });
 }
 
 function nextSlide() {
@@ -97,7 +79,7 @@ function goToSlide(index) {
   showSlide(currentSlide);
 }
 
-// Auto-play carousel - mudança a cada 5 segundos
+// Auto-play carousel
 let carouselInterval;
 
 function startCarouselAutoPlay() {
@@ -108,7 +90,7 @@ function startCarouselAutoPlay() {
   carouselInterval = setInterval(() => {
     console.log('Auto-advancing carousel...');
     nextSlide();
-  }, 5000); // 5 segundos
+  }, 5000);
 }
 
 // Modal de Denúncia
@@ -231,29 +213,29 @@ function setupFileUpload() {
     return;
   }
   
-  fileUploadArea.addEventListener('click', () => {
+  fileUploadArea.onclick = () => {
     console.log('File upload area clicked');
     fileInput.click();
-  });
+  };
   
-  fileUploadArea.addEventListener('dragover', (e) => {
+  fileUploadArea.ondragover = (e) => {
     e.preventDefault();
     fileUploadArea.classList.add('dragover');
-  });
+  };
   
-  fileUploadArea.addEventListener('dragleave', () => {
+  fileUploadArea.ondragleave = () => {
     fileUploadArea.classList.remove('dragover');
-  });
+  };
   
-  fileUploadArea.addEventListener('drop', (e) => {
+  fileUploadArea.ondrop = (e) => {
     e.preventDefault();
     fileUploadArea.classList.remove('dragover');
     handleFiles(e.dataTransfer.files);
-  });
+  };
   
-  fileInput.addEventListener('change', (e) => {
+  fileInput.onchange = (e) => {
     handleFiles(e.target.files);
-  });
+  };
   
   function handleFiles(files) {
     console.log('Handling files:', files.length);
@@ -400,63 +382,32 @@ Enviado através da plataforma VOZ SEGURA.`);
   }, 1000);
 }
 
-// Inicialização quando o DOM estiver carregado
+// Inicialização simplificada
 function initializeApp() {
   console.log('Initializing app...');
   
-  // Aguardar um pouco para garantir que todos os elementos estão carregados
+  // Aguardar DOM estar completamente carregado
   setTimeout(() => {
-    // Log carousel elements
-    const slides = document.querySelectorAll('.carousel-slide');
-    const indicators = document.querySelectorAll('.indicator');
-    const carouselContainer = document.querySelector('.carousel-container');
-    
-    console.log('Carousel container found:', !!carouselContainer);
-    console.log('Slides found:', slides.length);
-    console.log('Indicators found:', indicators.length);
-    
-    // Check images
-    slides.forEach((slide, index) => {
-      const img = slide.querySelector('img');
-      if (img) {
-        console.log(`Image ${index} src:`, img.src);
-        console.log(`Image ${index} alt:`, img.alt);
-        
-        img.onload = () => {
-          console.log(`Image ${index} loaded successfully`);
-        };
-        
-        img.onerror = (error) => {
-          console.error(`Image ${index} failed to load:`, error);
-          console.error(`Failed image src:`, img.src);
-        };
-        
-        // Forçar reload da imagem se necessário
-        if (!img.complete) {
-          img.src = img.src + '?t=' + Date.now();
-        }
-      }
-    });
+    console.log('Setting up event listeners...');
     
     // Configurar navegação
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.onclick = function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').substring(1);
         console.log('Nav link clicked:', targetId);
         scrollToSection(targetId);
-      });
+      };
     });
     
     // Configurar botão de emergência
     const emergencyBtn = document.querySelector('.emergency-exit');
     if (emergencyBtn) {
-      emergencyBtn.addEventListener('click', function(e) {
+      emergencyBtn.onclick = function(e) {
         e.preventDefault();
         console.log('Emergency button clicked');
         handleEmergencyExit();
-      });
+      };
     }
     
     // Configurar botões do carousel
@@ -464,37 +415,32 @@ function initializeApp() {
     const nextBtn = document.querySelector('.carousel-next');
     
     if (prevBtn) {
-      prevBtn.addEventListener('click', function(e) {
+      prevBtn.onclick = function(e) {
         e.preventDefault();
         console.log('Previous button clicked');
         prevSlide();
-      });
-      console.log('Previous button configured');
+      };
     }
     if (nextBtn) {
-      nextBtn.addEventListener('click', function(e) {
+      nextBtn.onclick = function(e) {
         e.preventDefault();
         console.log('Next button clicked');
         nextSlide();
-      });
-      console.log('Next button configured');
+      };
     }
     
     // Configurar indicadores do carousel
-    indicators.forEach((indicator, index) => {
-      indicator.addEventListener('click', function(e) {
+    document.querySelectorAll('.indicator').forEach((indicator, index) => {
+      indicator.onclick = function(e) {
         e.preventDefault();
         console.log('Indicator clicked:', index);
         goToSlide(index);
-      });
-      console.log(`Indicator ${index} configured`);
+      };
     });
     
     // Configurar botões principais usando data-action
-    const buttons = document.querySelectorAll('[data-action]');
-    console.log('Found buttons with data-action:', buttons.length);
-    buttons.forEach(btn => {
-      btn.addEventListener('click', function(e) {
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      btn.onclick = function(e) {
         e.preventDefault();
         const action = this.getAttribute('data-action');
         console.log('Button clicked with action:', action);
@@ -512,13 +458,12 @@ function initializeApp() {
           default:
             console.warn('Unknown action:', action);
         }
-      });
+      };
     });
     
-    // Configurar modais
-    const closeModalBtns = document.querySelectorAll('.close-modal');
-    closeModalBtns.forEach(btn => {
-      btn.addEventListener('click', function(e) {
+    // Configurar modais - botões de fechar
+    document.querySelectorAll('.close-modal').forEach(btn => {
+      btn.onclick = function(e) {
         e.preventDefault();
         const modal = this.closest('.modal-overlay');
         if (modal) {
@@ -528,7 +473,7 @@ function initializeApp() {
             closeApoioModal();
           }
         }
-      });
+      };
     });
     
     // Configurar upload de arquivos
@@ -537,18 +482,18 @@ function initializeApp() {
     // Configurar toggle anônimo
     const toggleAnonimo = document.getElementById('enviarAnonimo');
     if (toggleAnonimo) {
-      toggleAnonimo.addEventListener('change', updateFormVisibility);
+      toggleAnonimo.onchange = updateFormVisibility;
     }
     
     // Configurar submissão do formulário
     const denunciaForm = document.getElementById('denunciaForm');
     if (denunciaForm) {
-      denunciaForm.addEventListener('submit', handleFormSubmit);
+      denunciaForm.onsubmit = handleFormSubmit;
     }
     
     const apoioForm = document.getElementById('apoioForm');
     if (apoioForm) {
-      apoioForm.addEventListener('submit', handleApoioFormSubmit);
+      apoioForm.onsubmit = handleApoioFormSubmit;
     }
     
     // Configurar visibilidade inicial dos campos
@@ -562,17 +507,18 @@ function initializeApp() {
     startCarouselAutoPlay();
     
     console.log('App initialized successfully');
-  }, 500); // Aumentei o timeout para 500ms
+  }, 100);
 }
 
 // Event listeners principais
-document.addEventListener('DOMContentLoaded', initializeApp);
-if (document.readyState !== 'loading') {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
   initializeApp();
 }
 
 // Fechar modal com ESC
-document.addEventListener('keydown', function(e) {
+document.onkeydown = function(e) {
   if (e.key === 'Escape') {
     const denunciaModal = document.getElementById('denunciaModal');
     const apoioModal = document.getElementById('apoioModal');
@@ -584,10 +530,10 @@ document.addEventListener('keydown', function(e) {
       closeApoioModal();
     }
   }
-});
+};
 
 // Fechar modal clicando fora dele
-document.addEventListener('click', function(e) {
+document.onclick = function(e) {
   const denunciaModal = document.getElementById('denunciaModal');
   const apoioModal = document.getElementById('apoioModal');
   
@@ -597,10 +543,10 @@ document.addEventListener('click', function(e) {
   if (e.target === apoioModal) {
     closeApoioModal();
   }
-});
+};
 
 // Efeito de scroll no header
-window.addEventListener('scroll', function() {
+window.onscroll = function() {
   const header = document.querySelector('.header');
   if (!header) return;
   
@@ -611,7 +557,7 @@ window.addEventListener('scroll', function() {
     header.style.background = 'linear-gradient(135deg, #8B5CF6, #EC4899)';
     header.style.backdropFilter = 'none';
   }
-});
+};
 
 // Adicionar animação CSS
 const style = document.createElement('style');
