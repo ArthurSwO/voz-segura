@@ -8,6 +8,7 @@ import { setupForms } from './forms.js';
 import { addSlideOutAnimation } from './utils.js';
 
 function setupNavigation() {
+  console.log('Setting up navigation...');
   document.querySelectorAll('.nav-menu a').forEach(link => {
     link.onclick = function(e) {
       e.preventDefault();
@@ -28,6 +29,7 @@ function setupNavigation() {
 }
 
 function setupActionButtons() {
+  console.log('Setting up action buttons...');
   document.querySelectorAll('[data-action]').forEach(btn => {
     btn.onclick = function(e) {
       e.preventDefault();
@@ -54,6 +56,7 @@ function setupActionButtons() {
 function initializeApp() {
   console.log('Initializing app...');
   
+  // Aguardar um pouco para garantir que o DOM esteja pronto
   setTimeout(() => {
     console.log('Setting up event listeners...');
     

@@ -14,6 +14,7 @@ export function showSlide(index) {
     return;
   }
   
+  // Normalizar o índice
   if (index >= slides.length) {
     index = 0;
     currentSlide = 0;
@@ -23,9 +24,11 @@ export function showSlide(index) {
     currentSlide = slides.length - 1;
   }
   
+  // Remover classes ativas
   slides.forEach(slide => slide.classList.remove('active'));
   indicators.forEach(indicator => indicator.classList.remove('active'));
   
+  // Adicionar classes ativas
   if (slides[index]) {
     slides[index].classList.add('active');
     console.log(`Added active class to slide ${index}`);
@@ -68,6 +71,8 @@ export function startCarouselAutoPlay() {
 }
 
 export function setupCarouselControls() {
+  console.log('Setting up carousel controls...');
+  
   const prevBtn = document.querySelector('.carousel-prev');
   const nextBtn = document.querySelector('.carousel-next');
   
@@ -77,15 +82,23 @@ export function setupCarouselControls() {
       console.log('Previous button clicked');
       prevSlide();
     };
+    console.log('Previous button event listener added');
+  } else {
+    console.error('Previous button not found');
   }
+  
   if (nextBtn) {
     nextBtn.onclick = (e) => {
       e.preventDefault();
       console.log('Next button clicked');
       nextSlide();
     };
+    console.log('Next button event listener added');
+  } else {
+    console.error('Next button not found');
   }
   
+  // Configurar indicadores
   document.querySelectorAll('.indicator').forEach((indicator, index) => {
     indicator.onclick = (e) => {
       e.preventDefault();
@@ -93,4 +106,5 @@ export function setupCarouselControls() {
       goToSlide(index);
     };
   });
+  console.log('Indicator event listeners added');
 }

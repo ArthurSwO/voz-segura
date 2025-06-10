@@ -1,7 +1,7 @@
 
 // Manipulação de formulários
 import { getUploadedFiles } from './fileUpload.js';
-import { closeDenunciaModal, closeApoioModal } from './modals.js';
+import { closeDenunciaModal, closeApoioModal, updateFormVisibility } from './modals.js';
 
 export function handleFormSubmit(e) {
   console.log('Form submit triggered');
@@ -86,7 +86,6 @@ export function setupForms() {
   const toggleAnonimo = document.getElementById('enviarAnonimo');
   if (toggleAnonimo) {
     toggleAnonimo.onchange = () => {
-      const { updateFormVisibility } = await import('./modals.js');
       updateFormVisibility();
     };
   }
