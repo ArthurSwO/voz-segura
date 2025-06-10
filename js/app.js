@@ -9,7 +9,10 @@ import { addSlideOutAnimation } from './utils.js';
 
 function setupNavigation() {
   console.log('Setting up navigation...');
-  document.querySelectorAll('.nav-menu a').forEach(link => {
+  const navLinks = document.querySelectorAll('.nav-menu a');
+  console.log('Found nav links:', navLinks.length);
+  
+  navLinks.forEach(link => {
     link.onclick = function(e) {
       e.preventDefault();
       const targetId = this.getAttribute('href').substring(1);
@@ -19,6 +22,7 @@ function setupNavigation() {
   });
   
   const emergencyBtn = document.querySelector('.emergency-exit');
+  console.log('Emergency button found:', !!emergencyBtn);
   if (emergencyBtn) {
     emergencyBtn.onclick = function(e) {
       e.preventDefault();
@@ -30,7 +34,11 @@ function setupNavigation() {
 
 function setupActionButtons() {
   console.log('Setting up action buttons...');
-  document.querySelectorAll('[data-action]').forEach(btn => {
+  const actionButtons = document.querySelectorAll('[data-action]');
+  console.log('Found action buttons:', actionButtons.length);
+  
+  actionButtons.forEach(btn => {
+    console.log('Setting up button with action:', btn.getAttribute('data-action'));
     btn.onclick = function(e) {
       e.preventDefault();
       const action = this.getAttribute('data-action');
@@ -38,12 +46,15 @@ function setupActionButtons() {
       
       switch(action) {
         case 'denuncia':
+          console.log('Opening denuncia modal...');
           openDenunciaModal();
           break;
         case 'orientacoes':
+          console.log('Scrolling to orientacoes...');
           scrollToSection('orientacoes');
           break;
         case 'apoio':
+          console.log('Opening apoio modal...');
           openApoioModal();
           break;
         default:
@@ -55,6 +66,7 @@ function setupActionButtons() {
 
 function initializeApp() {
   console.log('Initializing app...');
+  console.log('Document ready state:', document.readyState);
   
   // Aguardar um pouco para garantir que o DOM esteja pronto
   setTimeout(() => {
@@ -89,7 +101,9 @@ window.removeFile = removeFile;
 
 // Inicialização
 if (document.readyState === 'loading') {
+  console.log('Document still loading, waiting for DOMContentLoaded...');
   document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
+  console.log('Document already loaded, initializing immediately...');
   initializeApp();
 }
