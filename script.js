@@ -1,4 +1,3 @@
-
 // Carousel
 let currentSlideIndex = 0;
 const slides = document.querySelectorAll('.slide');
@@ -46,8 +45,61 @@ function closeModal(modal) {
   modal.style.display = 'none';
 }
 
-// Event listeners
+// New Chart Function
+function createViolenceChart() {
+  const ctx = document.getElementById('violenceChart').getContext('2d');
+  
+  // Simulated data for violence cases per hour
+  const hourlyData = [0.8, 0.6, 0.4, 0.3, 0.2, 0.3, 0.5, 0.7, 1.2, 1.8, 2.1, 2.3, 
+                     2.5, 2.2, 1.9, 1.7, 1.5, 1.8, 2.0, 1.6, 1.4, 1.2, 1.0, 0.9];
+  
+  const hours = Array.from({length: 24}, (_, i) => i + 'h');
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: hours,
+      datasets: [{
+        label: 'Casos por Hora',
+        data: hourlyData,
+        borderColor: '#8B5CF6',
+        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Casos Registrados'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Horário do Dia'
+          }
+        }
+      }
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize chart
+  createViolenceChart();
+  
   // Close modals
   document.querySelectorAll('.close').forEach(closeBtn => {
     closeBtn.onclick = function() {

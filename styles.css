@@ -1,4 +1,5 @@
 
+/* ... keep existing code (basic styles, header, carousel, hero) */
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +18,6 @@ body {
   padding: 0 20px;
 }
 
-/* Header */
 header {
   background: linear-gradient(135deg, #8B5CF6, #EC4899);
   color: white;
@@ -68,7 +68,6 @@ nav a:hover {
   cursor: pointer;
 }
 
-/* Carousel */
 .carousel {
   position: relative;
   margin-top: 80px;
@@ -136,7 +135,6 @@ nav a:hover {
   background: white;
 }
 
-/* Hero */
 .hero {
   background: linear-gradient(135deg, #f3e8ff, #fce7f3);
   padding: 80px 0;
@@ -164,6 +162,7 @@ nav a:hover {
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 50px;
 }
 
 .btn-primary, .btn-secondary {
@@ -190,7 +189,35 @@ nav a:hover {
   transform: translateY(-2px);
 }
 
-/* Services */
+/* New Chart Section */
+.chart-section {
+  margin-top: 50px;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.chart-section h3 {
+  color: #8B5CF6;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.chart-container {
+  max-width: 600px;
+  margin: 0 auto;
+  height: 300px;
+}
+
+.chart-note {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* ... keep existing code (services section styles) */
 .services {
   padding: 80px 0;
   background: white;
@@ -231,7 +258,7 @@ nav a:hover {
   color: #8B5CF6;
 }
 
-/* Legal */
+/* ... keep existing code (legal section styles) */
 .legal {
   padding: 80px 0;
   background: #f9fafb;
@@ -273,9 +300,10 @@ nav a:hover {
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  flex-shrink: 0;
 }
 
-/* Contacts */
+/* ... keep existing code (contacts, footer, modal styles) */
 .contacts {
   padding: 80px 0;
   background: white;
@@ -307,7 +335,6 @@ nav a:hover {
   color: #dc2626;
 }
 
-/* Footer */
 footer {
   background: #1f2937;
   color: white;
@@ -331,7 +358,6 @@ footer {
   height: 40px;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -394,7 +420,6 @@ footer {
   font-size: 1rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .legal-content {
     grid-template-columns: 1fr;
@@ -411,5 +436,9 @@ footer {
   
   nav {
     order: -1;
+  }
+  
+  .chart-container {
+    height: 250px;
   }
 }
