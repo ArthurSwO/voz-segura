@@ -1,3 +1,4 @@
+
 // Carousel
 let currentSlideIndex = 0;
 const slides = document.querySelectorAll('.slide');
@@ -45,7 +46,7 @@ function closeModal(modal) {
   modal.style.display = 'none';
 }
 
-// New Chart Function
+// Chart Function
 function createViolenceChart() {
   const ctx = document.getElementById('violenceChart').getContext('2d');
   
