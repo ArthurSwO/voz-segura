@@ -1,405 +1,182 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VOZ SEGURA - Plataforma de Denúncias e Apoio Jurídico LGBT+</title>
-    <meta name="description" content="Plataforma segura para denúncias, orientação jurídica e apoio à comunidade LGBT+. Conectamos você aos recursos e profissionais que podem te ajudar." />
-    <meta name="author" content="VOZ SEGURA" />
-
-    <meta property="og:title" content="VOZ SEGURA - Plataforma de Denúncias e Apoio Jurídico LGBT+" />
-    <meta property="og:description" content="Plataforma segura para denúncias, orientação jurídica e apoio à comunidade LGBT+." />
-    <meta property="og:type" content="website" />
-
-    <link rel="stylesheet" href="styles.css">
-  </head>
-
-  <body>
-    <header class="header">
-      <div class="container">
-        <div class="nav-content">
-          <div class="logo">
-            <img src="/lovable-uploads/dbb79008-45f2-475a-875e-1429c4d1e68a.png" alt="VOZ SEGURA" class="logo-img">
-            <h1>VOZ SEGURA</h1>
-          </div>
-          
-          <nav class="nav-menu">
-            <a href="#inicio">Início</a>
-            <a href="#denuncias">Denúncias</a>
-            <a href="#orientacoes">Orientações</a>
-          </nav>
-
-          <button class="emergency-exit">
-            <span>⚠️</span>
-            Saída Rápida
-          </button>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOZ SEGURA - Plataforma LGBT+</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <img src="/lovable-uploads/dbb79008-45f2-475a-875e-1429c4d1e68a.png" alt="VOZ SEGURA">
+        <h1>VOZ SEGURA</h1>
       </div>
-    </header>
+      <nav>
+        <a href="#inicio">Início</a>
+        <a href="#denuncias">Denúncias</a>
+        <a href="#orientacoes">Orientações</a>
+      </nav>
+      <button class="emergency-btn" onclick="window.location.href='https://www.google.com'">
+        ⚠️ Saída Rápida
+      </button>
+    </div>
+  </header>
 
-    <!-- Carrossel de Fotos -->
-    <section class="carousel-section">
-      <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-          <div class="carousel-slide active">
-            <img src="/lovable-uploads/a67e2d0f-1486-4640-bd52-51d2618e66bf.png" alt="LGBTfobia é crime" class="carousel-image">
-          </div>
-          <div class="carousel-slide">
-            <img src="/lovable-uploads/3e49731e-a9e6-4a99-b59c-bcbb136a02de.png" alt="Mais afeto - Plataforma segura e acolhedora" class="carousel-image">
-          </div>
-        </div>
-        
-        <button class="carousel-btn carousel-prev">❮</button>
-        <button class="carousel-btn carousel-next">❯</button>
-        
-        <div class="carousel-indicators">
-          <span class="indicator active"></span>
-          <span class="indicator"></span>
-        </div>
-      </div>
-    </section>
+  <!-- Carousel -->
+  <section class="carousel">
+    <div class="slides">
+      <img src="/lovable-uploads/a67e2d0f-1486-4640-bd52-51d2618e66bf.png" alt="Slide 1" class="slide active">
+      <img src="/lovable-uploads/3e49731e-a9e6-4a99-b59c-bcbb136a02de.png" alt="Slide 2" class="slide">
+    </div>
+    <button class="prev" onclick="changeSlide(-1)">❮</button>
+    <button class="next" onclick="changeSlide(1)">❯</button>
+    <div class="dots">
+      <span class="dot active" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+  </section>
 
-    <!-- Modal de Denúncia -->
-    <div id="denunciaModal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Fazer Denúncia</h2>
-          <button class="close-modal">×</button>
-        </div>
-        
-        <form id="denunciaForm" class="denuncia-form">
-          <div class="form-section">
-            <div class="anonymous-toggle">
-              <label class="switch">
-                <input type="checkbox" id="enviarAnonimo">
-                <span class="slider"></span>
-              </label>
-              <span class="toggle-label">ENVIAR COMO ANÔNIMO</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <input type="text" id="nomeCompleto" placeholder="NOME COMPLETO" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <input type="email" id="email" placeholder="EMAIL" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <input type="tel" id="telefone" placeholder="TELEFONE" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <input type="date" id="data" class="form-input" required>
-            <label for="data" class="date-label">DATA</label>
-          </div>
-
-          <div class="form-group">
-            <select id="tipoOcorrencia" class="form-input" required>
-              <option value="">SELECIONE O TIPO DE OCORRÊNCIA</option>
-              <option value="discriminacao-trabalho">Discriminação no Trabalho</option>
-              <option value="discriminacao-escola">Discriminação na Escola</option>
-              <option value="violencia-fisica">Violência Física</option>
-              <option value="violencia-psicologica">Violência Psicológica</option>
-              <option value="discriminacao-servicos">Discriminação em Serviços</option>
-              <option value="cyberbullying">Cyberbullying</option>
-              <option value="violencia-domestica">Violência Doméstica</option>
-              <option value="outros">Outros</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <textarea id="descricao" placeholder="DESCRIÇÃO" class="form-textarea" rows="4" required></textarea>
-          </div>
-
-          <div class="form-group">
-            <textarea id="evidencias" placeholder="EVIDÊNCIAS" class="form-textarea" rows="3"></textarea>
-          </div>
-
-          <div class="form-group file-upload-section">
-            <div class="file-upload-area" id="fileUploadArea">
-              <div class="file-upload-content">
-                <span class="file-upload-icon">📎</span>
-                <p>Anexar Arquivo</p>
-                <p class="file-upload-subtitle">Foto, áudio ou vídeo (máx. 50MB)</p>
-              </div>
-              <input type="file" id="fileInput" accept="image/*,audio/*,video/*" multiple>
-            </div>
-            <div id="fileList" class="file-list"></div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn-continuar">Continuar</button>
-          </div>
-        </form>
+  <!-- Hero -->
+  <section id="inicio" class="hero">
+    <div class="container">
+      <h1>VOZ SEGURA</h1>
+      <p>Oferecemos recursos para denunciar discriminação, violência e buscar apoio jurídico e emocional para a comunidade LGBT+.</p>
+      <div class="buttons">
+        <button onclick="openModal('denuncia')" class="btn-primary">Fazer Denúncia</button>
+        <button onclick="scrollTo('#orientacoes')" class="btn-secondary">Orientações Jurídicas</button>
       </div>
     </div>
+  </section>
 
-    <!-- Modal de Apoio Emocional -->
-    <div id="apoioModal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Solicitar Apoio Emocional</h2>
-          <button class="close-modal">×</button>
+  <!-- Services -->
+  <section id="denuncias" class="services">
+    <div class="container">
+      <h2>Como Fazer sua Denúncia</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">📝</div>
+          <h3>Denúncias Seguras</h3>
+          <p>Relate violações de forma anônima ou identificada.</p>
+          <button onclick="openModal('denuncia')" class="btn-primary">Denunciar</button>
         </div>
-        
-        <form id="apoioForm" class="apoio-form">
-          <div class="form-group">
-            <input type="text" id="apoioNome" placeholder="SEU NOME (OPCIONAL)" class="form-input">
-          </div>
-
-          <div class="form-group">
-            <input type="email" id="apoioEmail" placeholder="SEU EMAIL (OPIONAL)" class="form-input">
-          </div>
-
-          <div class="form-group">
-            <textarea id="apoioMensagem" placeholder="DESCREVA COMO PODEMOS TE AJUDAR" class="form-textarea" rows="6" required></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn-continuar">Enviar Solicitação</button>
-          </div>
-        </form>
+        <div class="card">
+          <div class="icon">⚖️</div>
+          <h3>Orientação Jurídica</h3>
+          <p>Informações sobre seus direitos.</p>
+          <button onclick="scrollTo('#orientacoes')" class="btn-secondary">Ver Orientações</button>
+        </div>
+        <div class="card">
+          <div class="icon">💬</div>
+          <h3>Apoio Emocional</h3>
+          <p>Converse com voluntários treinados.</p>
+          <button onclick="openModal('apoio')" class="btn-secondary">Buscar Apoio</button>
+        </div>
       </div>
     </div>
+  </section>
 
-    <main>
-      <section id="inicio" class="hero">
-        <div class="container">
-          <div class="hero-content">
-            <h1 class="hero-title">VOZ SEGURA</h1>
-            <p class="hero-subtitle">
-              Oferecemos recursos para denunciar discriminação, violência e buscar apoio jurídico 
-              e emocional para a comunidade LGBT+, respeitando sua privacidade e segurança.
-            </p>
-            
-            <div class="hero-buttons">
-              <button class="btn btn-primary" data-action="denuncia">
-                Fazer Denúncia
-              </button>
-              <button class="btn btn-secondary" data-action="orientacoes">
-                Orientações Jurídicas
-              </button>
-            </div>
+  <!-- Legal Info -->
+  <section id="orientacoes" class="legal">
+    <div class="container">
+      <h2>Orientações Jurídicas</h2>
+      <div class="legal-content">
+        <div class="rights">
+          <h3>Seus Direitos</h3>
+          <div class="right-item">
+            <h4>Decisão do STF</h4>
+            <p>Equipara a discriminação por orientação sexual ao crime de racismo.</p>
           </div>
-
-          <div class="hero-stats">
-            <div class="stat-card">
-              <div class="stat-header">HOMICÍDIOS POR HOMOFOBIA</div>
-              <div class="stat-number">143</div>
-              <div class="stat-label">mortes</div>
-              <div class="stat-detail">1 assassinato a cada 24 horas</div>
-            </div>
+          <div class="right-item">
+            <h4>Direito ao nome social</h4>
+            <p>Reconhecimento da identidade de gênero.</p>
           </div>
         </div>
-      </section>
-
-      <section id="denuncias" class="denuncias-section">
-        <div class="container">
-          <h2>Como Fazer sua Denúncia</h2>
-          
-          <div class="denuncias-grid">
-            <div class="denuncia-card">
-              <div class="card-icon">📝</div>
-              <h3>Denúncias Seguras</h3>
-              <p>Relate violações de direitos de forma anônima ou identificada, com total proteção de dados.</p>
-              <button class="btn btn-primary" data-action="denuncia">Denunciar Agora</button>
-            </div>
-
-            <div class="denuncia-card">
-              <div class="card-icon">⚖️</div>
-              <h3>Orientação Jurídica</h3>
-              <p>Acesse informações sobre seus direitos e orientações de profissionais especializados.</p>
-              <button class="btn btn-secondary" data-action="orientacoes">Ver Orientações</button>
-            </div>
-
-            <div class="denuncia-card">
-              <div class="card-icon">💬</div>
-              <h3>Apoio Emocional</h3>
-              <p>Converse com voluntários treinados em um ambiente seguro e confidencial.</p>
-              <button class="btn btn-secondary" data-action="apoio">Buscar Apoio</button>
-            </div>
+        <div class="procedures">
+          <h3>Como Proceder</h3>
+          <div class="step">
+            <span>1</span>
+            <p>Registre um Boletim de Ocorrência</p>
           </div>
-        </div>
-      </section>
-
-      <section id="orientacoes" class="orientacoes-section">
-        <div class="container">
-          <h2>Orientações Jurídicas</h2>
-          <p class="section-subtitle">Conheça seus direitos e saiba como proceder em casos de discriminação.</p>
-          
-          <div class="orientacoes-grid">
-            <div class="orientacoes-column">
-              <h3>Seus Direitos</h3>
-              <div class="direitos-list">
-                <div class="direito-item">
-                  <h4>Decisão do STF</h4>
-                  <p>Equipara a discriminação por orientação sexual e identidade de gênero ao crime de racismo (Lei 7.716/89).</p>
-                </div>
-                <div class="direito-item">
-                  <h4>Direito ao nome social</h4>
-                  <p>Reconhecimento da identidade de gênero (Decreto nº 8.727/2016).</p>
-                </div>
-                <div class="direito-item">
-                  <h4>União estável</h4>
-                  <p>Casamento civil entre pessoas do mesmo gênero são permitidos e têm os mesmos direitos.</p>
-                </div>
-                <div class="direito-item">
-                  <h4>Proteção Legal</h4>
-                  <p>O Art. 140 do Código Penal protege contra injúria discriminatória.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="orientacoes-column">
-              <h3>Como Proceder</h3>
-              <div class="procedimentos-list">
-                <div class="procedimento-item">
-                  <span class="step-number">1</span>
-                  <div>
-                    <h4>Registre um Boletim de Ocorrência</h4>
-                    <p>na delegacia de inteligência. Se possível, procure delegacias especializadas em crimes de intolerância.</p>
-                  </div>
-                </div>
-                <div class="procedimento-item">
-                  <span class="step-number">2</span>
-                  <div>
-                    <h4>Guarde todas as evidências</h4>
-                    <p>prints, gravações, mensagens e nomes de testemunhas.</p>
-                  </div>
-                </div>
-                <div class="procedimento-item">
-                  <span class="step-number">3</span>
-                  <div>
-                    <h4>Procure a Defensoria Pública</h4>
-                    <p>ou um advogado especializado em direitos LGBT+.</p>
-                  </div>
-                </div>
-                <div class="procedimento-item">
-                  <span class="step-number">4</span>
-                  <div>
-                    <h4>Denuncie também ao Ministério Público</h4>
-                    <p>e órgãos de direitos humanos.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="situacoes-comuns">
-            <h3>Situações Comuns</h3>
-            <div class="situacoes-grid">
-              <div class="situacao-card">
-                <h4>Discriminação em local público</h4>
-                <p>É ilegal negar atendimento ou tratamento diferenciado em estabelecimentos comerciais, de serviço ou entretenimento com base em orientação sexual ou identidade de gênero.</p>
-                <div class="oque-fazer">
-                  <strong>O que fazer:</strong>
-                  <ul>
-                    <li>Registre a ocorrência no local (livro de reclamações, SAC)</li>
-                    <li>Obtenha nomes de testemunhas, grave o ocorrido se possível</li>
-                    <li>Faça um B.O. e denuncie ao Procon e órgãos de defesa do consumidor</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="situacao-card">
-                <h4>Discriminação no ambiente de trabalho</h4>
-                <p>Discriminação, assédio ou tratamento diferenciado com base em orientação sexual ou identidade de gênero no trabalho é ilegal e pode caracterizar dano moral.</p>
-                <div class="oque-fazer">
-                  <strong>O que fazer:</strong>
-                  <ul>
-                    <li>Registre as ocorrências com datas e detalhes</li>
-                    <li>Reporte ao departamento de RH ou canal de denúncias da empresa</li>
-                    <li>Procure o sindicato da categoria ou a Justiça do Trabalho</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="situacao-card">
-                <h4>Violência ou agressão</h4>
-                <p>Agressões físicas motivadas por homofobia ou transfobia são crimes graves que devem ser denunciados imediatamente.</p>
-                <div class="oque-fazer">
-                  <strong>O que fazer:</strong>
-                  <ul>
-                    <li>Busque atendimento médico e solicite um laudo das lesões</li>
-                    <li>Registre um B.O. em uma delegacia, preferencialmente especializada</li>
-                    <li>Solicite medidas protetivas se necessário</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="emergency-contacts">
-        <div class="container">
-          <h2>Canais de Denúncia Oficiais</h2>
-          <div class="contacts-grid">
-            <div class="contact-card urgent">
-              <h3>Disque 100</h3>
-              <p class="contact-number">100</p>
-              <p>Disque Direitos Humanos - Atendimento 24h</p>
-            </div>
-            <div class="contact-card urgent">
-              <h3>Disque 180</h3>
-              <p class="contact-number">180</p>
-              <p>Central de Atendimento à Mulher - Inclui mulheres trans</p>
-            </div>
-            <div class="contact-card">
-              <h3>Ministério Público da Bahia</h3>
-              <p><a href="https://www.mpba.mp.br/" target="_blank" class="contact-link">Denúncias online via site do MP-BA</a></p>
-            </div>
-            <div class="contact-card">
-              <h3>Defensoria Pública da Bahia</h3>
-              <p><a href="https://www.defensoria.ba.def.br/" target="_blank" class="contact-link">Atendimento jurídico gratuito</a></p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <div class="footer-logo">
-              <img src="/lovable-uploads/dbb79008-45f2-475a-875e-1429c4d1e68a.png" alt="VOZ SEGURA" class="footer-logo-img">
-              <h3>VOZ SEGURA</h3>
-            </div>
-            <p>Plataforma dedicada à proteção e apoio da comunidade LGBT+ através de denúncias seguras e orientação jurídica especializada.</p>
-          </div>
-
-          <div class="footer-section">
-            <h4>Serviços</h4>
-            <ul>
-              <li><a href="#denuncias">Denúncias Anônimas</a></li>
-              <li><a href="#orientacoes">Orientação Jurídica</a></li>
-              <li><a href="#apoio">Apoio Emocional</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Nosso Contato</h4>
-            <div class="contact-email">
-              <p class="email-address">vozsegura.ba@gmail.com</p>
-              <p class="development-credit">DESENVOLVIDO E IDEALIZADO POR ESTUDANTES DO CURSO DE ENGENHARIA DA COMPUTAÇÃO DA FACULDADE UNIJORGE</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <p>&copy; 2024 VOZ SEGURA. Todos os direitos reservados.</p>
-          <div class="footer-links">
-            <a href="#">Política de Privacidade</a>
-            <a href="#">Termos de Uso</a>
-            <a href="#">Sobre Nós</a>
+          <div class="step">
+            <span>2</span>
+            <p>Guarde todas as evidências</p>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
-  </body>
+  <!-- Emergency Contacts -->
+  <section class="contacts">
+    <div class="container">
+      <h2>Canais de Denúncia</h2>
+      <div class="contact-cards">
+        <div class="contact-card urgent">
+          <h3>Disque 100</h3>
+          <p class="number">100</p>
+        </div>
+        <div class="contact-card urgent">
+          <h3>Disque 180</h3>
+          <p class="number">180</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="/lovable-uploads/dbb79008-45f2-475a-875e-1429c4d1e68a.png" alt="VOZ SEGURA">
+          <h3>VOZ SEGURA</h3>
+        </div>
+        <p>vozsegura.ba@gmail.com</p>
+      </div>
+      <p>&copy; 2024 VOZ SEGURA. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Modals -->
+  <div id="denunciaModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Fazer Denúncia</h2>
+      <form id="denunciaForm">
+        <label>
+          <input type="checkbox" id="anonimo"> Enviar como anônimo
+        </label>
+        <input type="text" placeholder="Nome completo" required>
+        <input type="email" placeholder="Email" required>
+        <input type="tel" placeholder="Telefone" required>
+        <input type="date" required>
+        <select required>
+          <option value="">Tipo de ocorrência</option>
+          <option value="discriminacao">Discriminação</option>
+          <option value="violencia">Violência</option>
+        </select>
+        <textarea placeholder="Descrição" required></textarea>
+        <button type="submit">Enviar Denúncia</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="apoioModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Solicitar Apoio</h2>
+      <form id="apoioForm">
+        <input type="text" placeholder="Seu nome (opcional)">
+        <input type="email" placeholder="Seu email (opcional)">
+        <textarea placeholder="Como podemos te ajudar?" required></textarea>
+        <button type="submit">Enviar Solicitação</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
