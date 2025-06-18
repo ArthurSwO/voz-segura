@@ -49,7 +49,7 @@
         <button onclick="scrollTo('#orientacoes')" class="btn-secondary">Orientações Jurídicas</button>
       </div>
       
-      <!-- New Chart Section -->
+      <!-- Chart Section -->
       <div class="chart-section">
         <h3>Estatísticas de Violência LGBT+ por Hora</h3>
         <div class="chart-container">
@@ -137,15 +137,25 @@
   <!-- Emergency Contacts -->
   <section class="contacts">
     <div class="container">
-      <h2>Canais de Denúncia</h2>
-      <div class="contact-cards">
-        <div class="contact-card urgent">
+      <h2>Canais de Denúncia Oficiais</h2>
+      <div class="contact-cards-grid">
+        <div class="contact-card red">
           <h3>Disque 100</h3>
           <p class="number">100</p>
+          <p class="description">Disque Direitos Humanos - Atendimento 24h</p>
         </div>
-        <div class="contact-card urgent">
+        <div class="contact-card red">
           <h3>Disque 180</h3>
           <p class="number">180</p>
+          <p class="description">Central de Atendimento à Mulher - Inclui mulheres trans</p>
+        </div>
+        <div class="contact-card gray" onclick="window.open('https://www.mpba.mp.br/denuncia', '_blank')">
+          <h3>Ministério Público da Bahia</h3>
+          <p class="link-text">Denúncias online via site do MP-BA</p>
+        </div>
+        <div class="contact-card purple" onclick="window.open('https://www.defensoria.ba.def.br/', '_blank')">
+          <h3>Defensoria Pública da Bahia</h3>
+          <p class="link-text">Atendimento jurídico gratuito</p>
         </div>
       </div>
     </div>
