@@ -1,4 +1,3 @@
-
 // Carousel
 let currentSlideIndex = 0;
 const slides = document.querySelectorAll('.slide');
@@ -57,17 +56,15 @@ function createViolenceChart() {
   const hours = Array.from({length: 24}, (_, i) => i + 'h');
   
   new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
       labels: hours,
       datasets: [{
         label: 'Casos por Hora',
         data: hourlyData,
+        backgroundColor: 'rgba(139, 92, 246, 0.8)',
         borderColor: '#8B5CF6',
-        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-        borderWidth: 3,
-        fill: true,
-        tension: 0.4
+        borderWidth: 1
       }]
     },
     options: {
